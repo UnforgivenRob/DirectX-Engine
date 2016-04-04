@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game Engine", "Game Engine\Game Engine.vcxproj", "{E0CCB2A4-BEF9-4C62-8258-F477A502D182}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|Win32.Build.0 = Debug|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|Win32.ActiveCfg = Release|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
