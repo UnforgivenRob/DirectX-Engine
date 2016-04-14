@@ -5,6 +5,15 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="_Time">
+      <UniqueIdentifier>{18dd1f3e-deef-468c-9268-15de00ea4770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Time\include">
+      <UniqueIdentifier>{5a683058-34f4-43f4-8ddc-ef18866aef71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_Time\lib">
+      <UniqueIdentifier>{ac0115df-5b2b-4633-a607-a856cd5e0481}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -24,5 +33,16 @@
     <ClInclude Include="Game.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\libs\Time\include\Time.h">
+      <Filter>_Time\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\Time\include\Timer.h">
+      <Filter>_Time\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\libs\Time\lib\Time_Debug.lib">
+      <Filter>_Time\lib</Filter>
+    </Library>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@ private:
 	void ClearBuffers();
 	void SwapBuffers();
 
+protected:
 	bool bRun;
 };
 
