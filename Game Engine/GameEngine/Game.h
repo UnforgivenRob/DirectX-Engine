@@ -8,7 +8,7 @@ class Game :
 	public Engine
 {
 public:
-	Game();
+	Game( HINSTANCE hInstance );
 	~Game();
 
 	virtual void Initialize() override;

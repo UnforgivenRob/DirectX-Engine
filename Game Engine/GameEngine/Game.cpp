@@ -2,7 +2,8 @@
 #include "Time.h"
 #include <stdio.h>
 
-Game::Game()
+Game::Game( HINSTANCE hInstance )
+	: Engine( hInstance )
 {
 	FullTimer.tic();
 	intervalTimer.tic();

@@ -6,7 +6,7 @@
 class Engine
 {
 public:
-	Engine();
+	Engine( HINSTANCE hInstance );
 	~Engine();
 
 	void run();
@@ -17,11 +17,13 @@ public:
 	virtual void Draw() = 0;
 	virtual void UnloadContent() = 0;
 
+	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+
 private:
 	void PreLoad();
 	void PreInit();
 	void ClearBuffers();
-	void SwapBuffers();
+	void SwapBuffers();	
 
 protected:
 	bool bRun;

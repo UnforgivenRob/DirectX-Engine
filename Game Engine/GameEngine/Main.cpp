@@ -1,9 +1,10 @@
 #include "Game.h"
 
-int main( int argc, char** argv )
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance,
+				   PSTR cmdLine, int showCmd)
 {
-	argc, argv;
-	Game* app = new Game();
+	prevInstance, cmdLine, showCmd;
+	Game* app = new Game(hInstance);
 	app->run();
 
 	delete app;
