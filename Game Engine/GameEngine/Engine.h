@@ -25,6 +25,11 @@ private:
 	void ClearBuffers();
 	void SwapBuffers();	
 
+	//Message Handling functions
+	void OnResize();
+	virtual void OnMouseDown( WPARAM btnState, int x, int y ){ btnState, x, y;}
+	virtual void OnMouseUp( WPARAM btnState, int x, int y )  { btnState, x, y;}
+	virtual void OnMouseMove( WPARAM btnState, int x, int y ){ btnState, x, y;}
 protected:
 	bool bRun;
 

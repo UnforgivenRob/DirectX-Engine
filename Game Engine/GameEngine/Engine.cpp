@@ -25,7 +25,28 @@ LRESULT Engine::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_ACTIVATE:
 		return 0;
+	case WM_SIZE:
+		return 0;
+	case WM_ENTERSIZEMOVE:
+		return 0;
+	case WM_EXITSIZEMOVE:
+		return 0;
 	case WM_DESTROY:
+		bRun = false;
+		return 0;
+	case WM_MENUCHAR:
+		return 0;
+	case WM_GETMINMAXINFO:
+		return 0;
+	case WM_LBUTTONDOWN:
+	case WM_MBUTTONDOWN:
+	case WM_RBUTTONDOWN:
+		return 0;
+	case WM_LBUTTONUP:
+	case WM_MBUTTONUP:
+	case WM_RBUTTONUP:
+		return 0;
+	case WM_MOUSEMOVE:
 		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -66,8 +87,15 @@ void Engine::run()
 
 	LoadContent();
 
+	MSG msg = {};
 	while( bRun )
 	{
+		if(PeekMessage( &msg, 0, 0, 0, PM_REMOVE ))
+		{
+            TranslateMessage( &msg );
+            DispatchMessage( &msg );
+		}
+
 		Update();
 
 		ClearBuffers();
@@ -188,15 +216,30 @@ void Engine::PreLoad()
 	ReleaseCOM(dxgiAdapter);
 	ReleaseCOM(dxgiFactory);
 
-	ID3D11Texture2D* backBuffer;
+	OnResize();
+}
 
-	res = SwapChain->GetBuffer( 0, __uuidof(ID3D11Texture2D), (void**)&backBuffer );
+void Engine::OnResize()
+{
+	assert( Context );
+	assert( Device );
+	assert( SwapChain );
+
+	ReleaseCOM( RenderTargetView );
+	ReleaseCOM( DepthStencilView );
+	ReleaseCOM( DepthStencil );
+
+	HRESULT res = SwapChain->ResizeBuffers( 2, mClientWidth, mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0 );
+	assert( res == S_OK );
+
+	ID3D11Texture2D* backBuffer;
+	res = SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (void**)&backBuffer );
 	assert( res == S_OK );
 	res = Device->CreateRenderTargetView( backBuffer, 0, &RenderTargetView );
 	assert( res == S_OK );
-	
-	ReleaseCOM(backBuffer);
+	ReleaseCOM( backBuffer );
 
+	
 	D3D11_TEXTURE2D_DESC depthStencilDesc;
 	depthStencilDesc.Width = mClientWidth;
 	depthStencilDesc.Height = mClientHeight;

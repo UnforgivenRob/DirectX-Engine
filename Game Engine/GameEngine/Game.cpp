@@ -43,10 +43,6 @@ void Game::Update()
 		dif = Time ( TIME_ZERO );
 		printf( "Tic%d\n", cnt );
 		cnt++;
-		if( cnt > 10 )
-		{
-			bRun = false;
-		}
 	}
 
 	color[0] = 1.0f / (float)cnt;
