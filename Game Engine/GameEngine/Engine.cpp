@@ -23,10 +23,12 @@ LRESULT Engine::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	hwnd, wParam, lParam;
 	switch( msg )
 	{
+	case WM_ACTIVATE:
+		return 0;
 	case WM_DESTROY:
 		return 0;
 	default:
-		return 0;
+		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 }
 
@@ -106,7 +108,6 @@ void Engine::PreInit()
 	mMainWnd = CreateWindow( "D3DWndClassName", mCaption, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mApp, 0 ); 
 	if( !mMainWnd )
 	{
-		DWORD err = GetLastError(); err;
 		MessageBox(0, "CreateWindow Failed.", 0, 0);
 	}
 
@@ -128,18 +129,21 @@ void Engine::PreLoad()
 		D3D_FEATURE_LEVEL_11_0
 	};
 
+	featureLevels;
+
 	D3D_FEATURE_LEVEL featureLevel;
-	HRESULT res = D3D11CreateDevice( 0, D3D_DRIVER_TYPE_HARDWARE, 0, 0, featureLevels, 0, D3D11_SDK_VERSION, &Device, &featureLevel , &Context );
+	HRESULT res = D3D11CreateDevice( 0, D3D_DRIVER_TYPE_HARDWARE, 0, createDeviceFlags, 0, 0, D3D11_SDK_VERSION, &Device, &featureLevel , &Context );
 
 	if( FAILED(res) )
 	{
 		MessageBox( 0, "D3D11CreateDevice Failed\n", 0, 0 );
 	}
 
-	Device->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &msaaQuality );
+	res = Device->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &msaaQuality );
+	assert( res == S_OK );
 	assert( msaaQuality > 0 );
 
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
+	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 	swapChainDesc.BufferDesc.Width = 0;
 	swapChainDesc.BufferDesc.Height = 0;
 	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
@@ -166,15 +170,19 @@ void Engine::PreLoad()
 	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
 
 	IDXGIDevice1* dxgiDevice = 0;
-	Device->QueryInterface( __uuidof(IDXGIDevice), (void**)&dxgiDevice );
+	res = Device->QueryInterface( __uuidof(IDXGIDevice), (void**)&dxgiDevice );
+	assert( res == S_OK );
 	
 	IDXGIAdapter* dxgiAdapter = 0;
-	dxgiDevice->GetParent( __uuidof(IDXGIAdapter), (void**)&dxgiAdapter );
+	res = dxgiDevice->GetParent( __uuidof(IDXGIAdapter), (void**)&dxgiAdapter );
+	assert( res == S_OK );
 
 	IDXGIFactory* dxgiFactory = 0;
-	dxgiAdapter->GetParent( __uuidof(IDXGIFactory), (void**)&dxgiFactory );
+	res = dxgiAdapter->GetParent( __uuidof(IDXGIFactory), (void**)&dxgiFactory );
+	assert( res == S_OK );
 
-	dxgiFactory->CreateSwapChain(Device, &swapChainDesc, &SwapChain );
+	res = dxgiFactory->CreateSwapChain(Device, &swapChainDesc, &SwapChain );
+	assert( res == S_OK );
 
 	ReleaseCOM(dxgiDevice);
 	ReleaseCOM(dxgiAdapter);
@@ -182,8 +190,10 @@ void Engine::PreLoad()
 
 	ID3D11Texture2D* backBuffer;
 
-	SwapChain->GetBuffer( 0, __uuidof(ID3D11Texture2D), (void**)&backBuffer );
-	Device->CreateRenderTargetView( backBuffer, 0, &RenderTargetView );
+	res = SwapChain->GetBuffer( 0, __uuidof(ID3D11Texture2D), (void**)&backBuffer );
+	assert( res == S_OK );
+	res = Device->CreateRenderTargetView( backBuffer, 0, &RenderTargetView );
+	assert( res == S_OK );
 	
 	ReleaseCOM(backBuffer);
 
@@ -210,8 +220,10 @@ void Engine::PreLoad()
 	depthStencilDesc.CPUAccessFlags = 0;
 	depthStencilDesc.MiscFlags = 0;
 
-	Device->CreateTexture2D( &depthStencilDesc, 0, &DepthStencil );
-	Device->CreateDepthStencilView( DepthStencil, 0, &DepthStencilView );
+	res = Device->CreateTexture2D( &depthStencilDesc, 0, &DepthStencil );
+	assert( res == S_OK );
+	res = Device->CreateDepthStencilView( DepthStencil, 0, &DepthStencilView );
+	assert( res == S_OK );
 
 	Context->OMSetRenderTargets( 1, &RenderTargetView, DepthStencilView );
 

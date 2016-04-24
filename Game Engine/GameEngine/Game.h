@@ -20,6 +20,7 @@ public:
 private:
 	Timer FullTimer;
 	Timer intervalTimer;
+	float color[4];
 };
 #endif
 
