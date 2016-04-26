@@ -3,6 +3,7 @@
 
 #include "engine.h"
 #include "Timer.h"
+#include "MathEngine.h"
 
 class Game :
 	public Engine
@@ -20,7 +21,7 @@ public:
 private:
 	Timer FullTimer;
 	Timer intervalTimer;
-	float color[4];
+	Vect color;
 };
 #endif
 

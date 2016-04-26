@@ -46,7 +46,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)MathEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
     </ClCompile>
@@ -77,11 +77,22 @@
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h" />
     <ClInclude Include="..\libs\Time\include\Timer.h" />
+    <ClInclude Include="..\MathEngine\Constants.h" />
+    <ClInclude Include="..\MathEngine\Enum.h" />
+    <ClInclude Include="..\MathEngine\MathApp.h" />
+    <ClInclude Include="..\MathEngine\MathEngine.h" />
+    <ClInclude Include="..\MathEngine\Matrix.h" />
+    <ClInclude Include="..\MathEngine\Quat.h" />
+    <ClInclude Include="..\MathEngine\QuatApp.h" />
+    <ClInclude Include="..\MathEngine\Util.h" />
+    <ClInclude Include="..\MathEngine\Vect.h" />
+    <ClInclude Include="..\MathEngine\VectApp.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Game.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib" />
+    <Library Include="Debug\MathEngine_Debug.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

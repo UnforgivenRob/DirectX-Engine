@@ -6,10 +6,7 @@
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
 {
-	color[0] = 0.0f;
-	color[1] = 0.0f;
-	color[2] = 0.0f;
-	color[3] = 1.0f;
+	color = Vect( 1.0f, 1.0f, 1.0f, 1.0f );
 	FullTimer.tic();
 	intervalTimer.tic();
 }
@@ -45,9 +42,9 @@ void Game::Update()
 		cnt++;
 	}
 
-	color[0] = 1.0f / (float)cnt;
-	color[1] = 1.0f / (float)cnt;
-	color[2] = 1.0f / (float)cnt;
+	color[x] = 1.0f / (float)cnt;
+	color[y] = 1.0f / (float)cnt;
+	color[z] = 1.0f / (float)cnt;
 }
 
 void Game::Draw()
@@ -55,7 +52,7 @@ void Game::Draw()
 	assert( Context );
 	assert( SwapChain );
 
-	Context->ClearRenderTargetView(RenderTargetView, color );
+	Context->ClearRenderTargetView(RenderTargetView, &color[x] );
 	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 	HRESULT res = SwapChain->Present(0, 0);

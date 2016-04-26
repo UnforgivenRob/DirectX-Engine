@@ -14,6 +14,15 @@
     <Filter Include="_Time\lib">
       <UniqueIdentifier>{ac0115df-5b2b-4633-a607-a856cd5e0481}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_MathEngine">
+      <UniqueIdentifier>{def2ce08-1c31-40f7-8101-a19e17bb5416}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_MathEngine\include">
+      <UniqueIdentifier>{c99c82d3-e1e2-4fad-a652-c4e099d811d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_MathEngine\lib">
+      <UniqueIdentifier>{8b9ec206-45d6-4646-8a10-9f29c11ed227}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -39,10 +48,43 @@
     <ClInclude Include="..\libs\Time\include\Timer.h">
       <Filter>_Time\include</Filter>
     </ClInclude>
+    <ClInclude Include="..\MathEngine\Constants.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\Enum.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\MathApp.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\MathEngine.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\Matrix.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\Quat.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\QuatApp.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\Util.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\Vect.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\MathEngine\VectApp.h">
+      <Filter>_MathEngine\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib">
       <Filter>_Time\lib</Filter>
+    </Library>
+    <Library Include="Debug\MathEngine_Debug.lib">
+      <Filter>_MathEngine\lib</Filter>
     </Library>
   </ItemGroup>
 </Project>
