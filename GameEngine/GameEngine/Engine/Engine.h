@@ -15,6 +15,7 @@ public:
 	virtual void LoadContent() = 0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
+	virtual void ClearBuffers() = 0;
 	virtual void UnloadContent() = 0;
 
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -22,7 +23,7 @@ public:
 private:
 	void PreLoad();
 	void PreInit();
-	void ClearBuffers();
+	
 	void SwapBuffers();	
 
 	//Message Handling functions

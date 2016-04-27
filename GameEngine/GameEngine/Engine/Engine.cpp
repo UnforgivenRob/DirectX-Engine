@@ -280,9 +280,6 @@ void Engine::OnResize()
 	Context->RSSetViewports( 1, &Viewport );
 }
 
-void Engine::ClearBuffers()
-{
-}
 void Engine::SwapBuffers()
 {
 }

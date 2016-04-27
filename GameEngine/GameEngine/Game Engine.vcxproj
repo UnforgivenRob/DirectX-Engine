@@ -70,9 +70,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Engine.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\Main.cpp" />
+    <ClCompile Include="Shader\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h" />
@@ -87,8 +88,9 @@
     <ClInclude Include="..\MathEngine\Util.h" />
     <ClInclude Include="..\MathEngine\Vect.h" />
     <ClInclude Include="..\MathEngine\VectApp.h" />
-    <ClInclude Include="Engine.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Shader\Shader.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib" />

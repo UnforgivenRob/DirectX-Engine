@@ -16,12 +16,13 @@ public:
 	virtual void LoadContent() override;
 	virtual void Update() override;
 	virtual void Draw() override;
+	virtual void ClearBuffers() override;
 	virtual void UnloadContent() override;
 
 private:
 	Timer FullTimer;
 	Timer intervalTimer;
-	Vect color;
+	Vect bgColor;
 };
 #endif
 
