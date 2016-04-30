@@ -25,6 +25,18 @@
     <Filter Include="Game Engine">
       <UniqueIdentifier>{56aa1d81-646d-42b0-9d9b-e8ea43e2c65d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders\Shaders">
+      <UniqueIdentifier>{5568ea06-4510-4ca9-8e2c-7c57f5b4641d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File">
+      <UniqueIdentifier>{dfe938fa-5073-4d7d-bfe1-ad53ff5bc415}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File\lib">
+      <UniqueIdentifier>{119e4ef4-b085-4fc3-b0bb-92a4b497396c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_File\include">
+      <UniqueIdentifier>{3f5f4934-213c-41ff-81cf-6482521397b5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -37,6 +49,9 @@
       <Filter>Game Engine</Filter>
     </ClCompile>
     <ClCompile Include="Shader\Shader.cpp">
+      <Filter>Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="ShaderManager.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,6 +101,12 @@
     <ClInclude Include="Shader\Shader.h">
       <Filter>Shaders</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderManager.h">
+      <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="..\File\FileSystem.h">
+      <Filter>_File\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib">
@@ -94,5 +115,16 @@
     <Library Include="Debug\MathEngine_Debug.lib">
       <Filter>_MathEngine\lib</Filter>
     </Library>
+    <Library Include="Debug\File_Debug.lib">
+      <Filter>_File\lib</Filter>
+    </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\Shaders\Base.vs.hlsl">
+      <Filter>Shaders\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Shaders\Base.ps.hlsl">
+      <Filter>Shaders\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

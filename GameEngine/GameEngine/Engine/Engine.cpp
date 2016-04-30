@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <WindowsX.h>
 
-#define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
 namespace
 {
 	Engine* app = 0;
@@ -282,4 +281,14 @@ void Engine::OnResize()
 
 void Engine::SwapBuffers()
 {
+}
+
+ID3D11Device* const Engine::getDevice() 
+{ 
+	return Device; 
+}
+
+ID3D11DeviceContext* const Engine::getContext() 
+{ 
+	return Context; 
 }

@@ -3,6 +3,8 @@
 
 #include <d3d11.h>
 
+#define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
+
 class Engine
 {
 public:
@@ -20,17 +22,18 @@ public:
 
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+	ID3D11Device* const getDevice();
+	ID3D11DeviceContext* const getContext();
 private:
 	void PreLoad();
 	void PreInit();
-	
 	void SwapBuffers();	
 
 	//Message Handling functions
 	void OnResize();
-	virtual void OnMouseDown( WPARAM btnState, int x, int y ){ btnState, x, y;}
-	virtual void OnMouseUp( WPARAM btnState, int x, int y )  { btnState, x, y;}
-	virtual void OnMouseMove( WPARAM btnState, int x, int y ){ btnState, x, y;}
+	virtual void OnMouseDown( WPARAM btnState, int x, int y ){ btnState, x, y; }
+	virtual void OnMouseUp( WPARAM btnState, int x, int y )  { btnState, x, y; }
+	virtual void OnMouseMove( WPARAM btnState, int x, int y ){ btnState, x, y; }
 protected:
 	bool bRun;
 

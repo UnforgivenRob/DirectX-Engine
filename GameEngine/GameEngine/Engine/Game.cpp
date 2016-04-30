@@ -2,6 +2,7 @@
 #include "Time.h"
 #include <stdio.h>
 #include <assert.h>
+#include "Shader.h"
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -21,6 +22,19 @@ void Game::Initialize()
 
 void Game::LoadContent()
 {
+	//D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
+	//{
+	//	{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+	//	{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	//};
+
+	// Create the input layout
+	/*D3d11_
+    D3DX11_PASS_DESC passDesc;
+    mTech->GetPassByIndex(0)->GetDesc(&passDesc);
+	Device->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature, 
+	passDesc.IAInputSignatureSize, &mInputLayout));*/
+	Shader shade( Shader_ID::Base, "Base", this );
 }
 
 void Game::Update()
@@ -59,6 +73,10 @@ void Game::ClearBuffers()
 
 	Context->ClearRenderTargetView(RenderTargetView, &bgColor[x] );
 	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+	//Context->IASetInputLayout(mInputLayout);
+    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
 
 	HRESULT res = SwapChain->Present(0, 0);
 	assert( res == S_OK );
