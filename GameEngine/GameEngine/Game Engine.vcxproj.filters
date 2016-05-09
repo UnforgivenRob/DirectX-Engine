@@ -37,6 +37,18 @@
     <Filter Include="_File\include">
       <UniqueIdentifier>{3f5f4934-213c-41ff-81cf-6482521397b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{5b21997d-fdd5-414c-887d-793edf4f6602}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjects">
+      <UniqueIdentifier>{14957384-4296-4bfb-99ba-627963410d4e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GraphicsObjects">
+      <UniqueIdentifier>{ed57e9ea-f43b-4fe2-9841-52ecc66daabd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Materials">
+      <UniqueIdentifier>{2d2ca0e1-7d2e-4ca3-9bb3-13a7cee72099}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -51,7 +63,10 @@
     <ClCompile Include="Shader\Shader.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="ShaderManager.cpp">
+    <ClCompile Include="Model\Model.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader\ShaderManager.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,11 +116,14 @@
     <ClInclude Include="Shader\Shader.h">
       <Filter>Shaders</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderManager.h">
-      <Filter>Shaders</Filter>
-    </ClInclude>
     <ClInclude Include="..\File\FileSystem.h">
       <Filter>_File\include</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Model.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\ShaderManager.h">
+      <Filter>Shaders</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

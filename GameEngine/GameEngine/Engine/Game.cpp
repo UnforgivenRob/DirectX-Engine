@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include "Shader.h"
+#include "Model.h"
+
+Shader* shade = 0;
+Model* model = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -34,7 +38,9 @@ void Game::LoadContent()
     mTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	Device->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature, 
 	passDesc.IAInputSignatureSize, &mInputLayout));*/
-	Shader shade( Shader_ID::Base, "Base", this );
+	shade = new Shader( Shader_ID::Base, "Base", this );
+	model = new Model( this );
+
 }
 
 void Game::Update()
@@ -63,7 +69,18 @@ void Game::Update()
 
 void Game::Draw()
 {
+	Context->IASetInputLayout(shade->getVertexLayout());
+    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
+	Context->IASetVertexBuffers( 0, 1, model->getVertexBuffer(), model->getStride(), model->getOffset() ); 
+	Context->IASetIndexBuffer( model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0 ); 
+	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
+	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
+
+	Context->DrawIndexed( 3, 0, 0 ); 
+
+	HRESULT res = SwapChain->Present(0, 0);
+	assert( res == S_OK );
 }
 
 void Game::ClearBuffers()
@@ -72,16 +89,12 @@ void Game::ClearBuffers()
 	assert( SwapChain );
 
 	Context->ClearRenderTargetView(RenderTargetView, &bgColor[x] );
-	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH|D3D11_CLEAR_STENCIL, 1.0f, 0);
+	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	
 
-	//Context->IASetInputLayout(mInputLayout);
-    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-
-	HRESULT res = SwapChain->Present(0, 0);
-	assert( res == S_OK );
 }
 
 void Game::UnloadContent()
 {
+	delete shade;
 }

@@ -89,6 +89,7 @@ void Engine::run()
 	MSG msg = {};
 	while( bRun )
 	{
+		SwapBuffers();
 		if(PeekMessage( &msg, 0, 0, 0, PM_REMOVE ))
 		{
             TranslateMessage( &msg );
@@ -99,9 +100,7 @@ void Engine::run()
 
 		ClearBuffers();
 
-		Draw();
-
-		SwapBuffers();
+		Draw();		
 	}
 
 	UnloadContent();
@@ -191,10 +190,10 @@ void Engine::PreLoad()
 	}
 
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferCount = 2;
+	swapChainDesc.BufferCount = 1;
 	swapChainDesc.Windowed = true;
 	swapChainDesc.OutputWindow = mMainWnd;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
 	IDXGIDevice1* dxgiDevice = 0;
 	res = Device->QueryInterface( __uuidof(IDXGIDevice), (void**)&dxgiDevice );

@@ -48,7 +48,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -76,8 +76,9 @@
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
-    <ClCompile Include="ShaderManager.cpp" />
+    <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
+    <ClCompile Include="Shader\ShaderManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\File\FileSystem.h" />
@@ -95,8 +96,9 @@
     <ClInclude Include="..\MathEngine\VectApp.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
-    <ClInclude Include="ShaderManager.h" />
+    <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Shader\Shader.h" />
+    <ClInclude Include="Shader\ShaderManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib" />

@@ -49,6 +49,24 @@ void Shader::CompileVertexShader( char* vsName )
 
 	HRESULT res = Device->CreateVertexShader( vsByteCode, sz, nullptr, &vs );
 	assert( res == S_OK );
+
+	D3D11_INPUT_ELEMENT_DESC layout[] = 
+    { 
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
+		{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
+		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
+    }; 
+    UINT numElements = ARRAYSIZE( layout ); 
+ 
+    // Create the input layout 
+	res = Device->CreateInputLayout( layout, numElements, vsByteCode, sz, &vertexLayout ); 
+	assert( res == S_OK );
+
+    // Set the input layout 
+    Context->IASetInputLayout( vertexLayout ); 
+
+	err = File::close( fh );
+	assert( err == FILE_SUCCESS );
 }
 
 void Shader::CompilePixelShader( char* psName )
@@ -75,4 +93,19 @@ void Shader::CompilePixelShader( char* psName )
 
 	HRESULT res = Device->CreatePixelShader( psByteCode, sz, nullptr, &ps );
 	assert( res == S_OK );
+}
+
+ID3D11VertexShader* Shader::getVertexShader()
+{
+	return vs;
+}
+
+ID3D11PixelShader* Shader::getPixelShader()
+{
+	return ps;
+}
+
+ID3D11InputLayout* Shader::getVertexLayout()
+{
+	return vertexLayout;
 }

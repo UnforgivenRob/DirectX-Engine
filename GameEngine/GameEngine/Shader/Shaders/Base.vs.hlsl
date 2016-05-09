@@ -1,7 +1,8 @@
 struct VertIn
 {
-	float4 Pos  : POSITION;
-    float4 Color : COLOR;
+	float3 Pos  : POSITION;
+    float2 uv :	UV;
+	float3 norm : NORMAL;
 };
 
 struct VertOut
@@ -14,8 +15,8 @@ VertOut main( VertIn vIn )
 {
 	VertOut vOut;
 	
-	vOut.Pos = vIn.Pos;
-	vOut.Color = vIn.Color;
+	vOut.Pos = float4(vIn.Pos, 1.0f);
+	vOut.Color = float4( 1.0f, .5f, 0.0f, 1.0f);
 
 	return vOut;
 }
