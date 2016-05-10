@@ -20,17 +20,35 @@ Model::Model( Game* inGame )
 {
 	vert verts[] = 
 	{
-	{ 0.0f, 0.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-	{ 1.0f, 0.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-	{ 0.0f, 1.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
+		{ 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+		{ 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+		{ -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+		{ -1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	//	{ 1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	//	{ 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	//	{ -1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	//	{ -1.0f, 1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
 	};
-	int indices[] = { 0, 2, 1};
+
+	unsigned int indices[] = {  0, 2, 1,
+								0, 3, 2,
+								//0, 4, 3,
+								//3, 4, 7,
+								//0, 1, 4, 
+								//1, 5, 4,
+								//4, 5, 6,
+								//4, 6, 7,
+								//3, 6, 2,
+								//3, 7, 6,
+								//1, 2, 5,
+								//2, 6, 5
+							};
 
 	ID3D11Device* device = inGame->getDevice();
 
 	D3D11_BUFFER_DESC vertexDesc;
 	vertexDesc.Usage           = D3D11_USAGE_IMMUTABLE;
-	vertexDesc.ByteWidth       = 3 * sizeof( vert );
+	vertexDesc.ByteWidth       = 4 * sizeof( vert );
 	vertexDesc.BindFlags       = D3D11_BIND_VERTEX_BUFFER;
 	vertexDesc.CPUAccessFlags  = 0;
 	vertexDesc.MiscFlags       = 0;
@@ -45,7 +63,7 @@ Model::Model( Game* inGame )
 
 	D3D11_BUFFER_DESC indexDesc;
 	indexDesc.Usage           = D3D11_USAGE_DEFAULT;
-	indexDesc.ByteWidth       = 3 * sizeof( unsigned int );
+	indexDesc.ByteWidth       = /*6 * */ 2 * 3 * sizeof( unsigned int );
 	indexDesc.BindFlags       = D3D11_BIND_INDEX_BUFFER;
 	indexDesc.CPUAccessFlags  = 0;
 	indexDesc.MiscFlags       = 0;
@@ -59,7 +77,7 @@ Model::Model( Game* inGame )
 	assert( res == S_OK );
 
 	inGame->getContext()->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &offset ); 
-	inGame->getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R16_UINT, 0 ); 
+	inGame->getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 ); 
 }
 
 Model::Model( const char* filename )

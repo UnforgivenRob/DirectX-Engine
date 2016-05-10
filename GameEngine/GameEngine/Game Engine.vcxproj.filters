@@ -69,6 +69,9 @@
     <ClCompile Include="Shader\ShaderManager.cpp">
       <Filter>Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="Material\Material.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Shader\ShaderManager.h">
       <Filter>Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Material\Material.h">
+      <Filter>Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

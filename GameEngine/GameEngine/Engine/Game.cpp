@@ -4,9 +4,11 @@
 #include <assert.h>
 #include "Shader.h"
 #include "Model.h"
+#include "Material.h"
 
 Shader* shade = 0;
 Model* model = 0;
+Material* mat = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -40,6 +42,7 @@ void Game::LoadContent()
 	passDesc.IAInputSignatureSize, &mInputLayout));*/
 	shade = new Shader( Shader_ID::Base, "Base", this );
 	model = new Model( this );
+	mat = new Material( this );
 
 }
 
@@ -69,6 +72,7 @@ void Game::Update()
 
 void Game::Draw()
 {
+	mat->activate();
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
 
@@ -78,7 +82,7 @@ void Game::Draw()
 	Context->IASetInputLayout(shade->getVertexLayout());
     Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	Context->DrawIndexed( 3, 0, 0 ); 
+	Context->DrawIndexed( 6, 0, 0 ); 
 
 	HRESULT res = SwapChain->Present(0, 0);
 	assert( res == S_OK );
