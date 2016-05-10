@@ -20,16 +20,16 @@ Model::Model( Game* inGame )
 {
 	vert verts[] = 
 	{
-	{ 0.0f, 0.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-	{ 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
-	{ 0.0f, 100.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
+	{ 0.0f, 0.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	{ 1.0f, 0.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f},
+	{ 0.0f, 1.0f, 00.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
 	};
-	int indices[] = { 0, 1, 2};
+	int indices[] = { 0, 2, 1};
 
 	ID3D11Device* device = inGame->getDevice();
 
 	D3D11_BUFFER_DESC vertexDesc;
-	vertexDesc.Usage           = D3D11_USAGE_DEFAULT;
+	vertexDesc.Usage           = D3D11_USAGE_IMMUTABLE;
 	vertexDesc.ByteWidth       = 3 * sizeof( vert );
 	vertexDesc.BindFlags       = D3D11_BIND_VERTEX_BUFFER;
 	vertexDesc.CPUAccessFlags  = 0;

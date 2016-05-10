@@ -69,13 +69,14 @@ void Game::Update()
 
 void Game::Draw()
 {
-	Context->IASetInputLayout(shade->getVertexLayout());
-    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-
-	Context->IASetVertexBuffers( 0, 1, model->getVertexBuffer(), model->getStride(), model->getOffset() ); 
-	Context->IASetIndexBuffer( model->getIndexBuffer(), DXGI_FORMAT_R16_UINT, 0 ); 
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
+
+	Context->IASetVertexBuffers( 0, 1, model->getVertexBuffer(), model->getStride(), model->getOffset() ); 
+	Context->IASetIndexBuffer( model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 ); 
+
+	Context->IASetInputLayout(shade->getVertexLayout());
+    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	Context->DrawIndexed( 3, 0, 0 ); 
 
@@ -89,7 +90,7 @@ void Game::ClearBuffers()
 	assert( SwapChain );
 
 	Context->ClearRenderTargetView(RenderTargetView, &bgColor[x] );
-	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	
 
 }
@@ -97,4 +98,5 @@ void Game::ClearBuffers()
 void Game::UnloadContent()
 {
 	delete shade;
+	delete model;
 }
