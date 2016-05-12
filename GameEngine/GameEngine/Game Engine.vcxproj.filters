@@ -131,6 +131,7 @@
     <ClInclude Include="Material\Material.h">
       <Filter>Materials</Filter>
     </ClInclude>
+    <ClInclude Include="Shader\ConstantBuffers.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib">

@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Model.h"
 #include "Material.h"
+#include "ConstantBuffers.h"
 
 Shader* shade = 0;
 Model* model = 0;
@@ -40,11 +41,14 @@ void Game::LoadContent()
     mTech->GetPassByIndex(0)->GetDesc(&passDesc);
 	Device->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature, 
 	passDesc.IAInputSignatureSize, &mInputLayout));*/
+
 	shade = new Shader( Shader_ID::Base, "Base", this );
 	model = new Model( this );
 	mat = new Material( this );
 
 }
+
+Matrix Rot = Matrix(IDENTITY);
 
 void Game::Update()
 {
@@ -68,6 +72,8 @@ void Game::Update()
 	bgColor[x] = 1.0f / (float)cnt;
 	bgColor[y] = 1.0f / (float)cnt;
 	bgColor[z] = 1.0f / (float)cnt;
+
+	Rot *= Matrix(ROT_XYZ, .0005f, .0005f, .0005f );
 }
 
 void Game::Draw()
@@ -76,13 +82,22 @@ void Game::Draw()
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
 
+	baseBuffer buf;
+	buf.model =Matrix(SCALE, .1f, .1f, .1f)  * Rot * Matrix(TRANS, .5f, .5f, .5f);
+	buf.proj = Matrix(IDENTITY);
+	buf.view = Matrix(IDENTITY);
+
+	ID3D11Buffer* cBuf = shade->getConstBuffer();
+	Context->UpdateSubresource( cBuf, 0, nullptr, &buf, 0, 0);
+	Context->VSSetConstantBuffers(0, 1, &cBuf );
+
 	Context->IASetVertexBuffers( 0, 1, model->getVertexBuffer(), model->getStride(), model->getOffset() ); 
 	Context->IASetIndexBuffer( model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 ); 
 
 	Context->IASetInputLayout(shade->getVertexLayout());
     Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	Context->DrawIndexed( 6, 0, 0 ); 
+	Context->DrawIndexed( 36, 0, 0 ); 
 
 	HRESULT res = SwapChain->Present(0, 0);
 	assert( res == S_OK );

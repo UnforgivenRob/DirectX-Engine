@@ -5,6 +5,13 @@ struct VertIn
 	float3 norm : NORMAL;
 };
 
+cbuffer VS_CONSTANT_BUFFER
+{
+	float4x4 model;
+	float4x4 view;
+	float4x4 proj;
+};
+
 struct VertOut
 {
 	float4 Pos  : SV_POSITION;
@@ -15,8 +22,8 @@ VertOut main( VertIn vIn )
 {
 	VertOut vOut;
 	
-	vOut.Pos = float4(vIn.Pos, 1.0f);
-	vOut.Color = float4( 1.0f, .5f, 0.0f, 1.0f);
+	vOut.Pos = mul( proj, mul( view, mul( model, float4( vIn.Pos, 1.0f ) ) ) );
+	vOut.Color = float4( vIn.Pos, 1.0f);
 
 	return vOut;
 }

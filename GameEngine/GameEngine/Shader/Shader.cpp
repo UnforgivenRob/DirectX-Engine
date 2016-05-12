@@ -2,6 +2,7 @@
 #include <string>
 #include "Game.h"
 #include "FileSystem.h"
+#include "ConstantBuffers.h"
 
 Shader::Shader( Shader_ID id, char* inName, Game* inGame )
 	: id( id ), Device( inGame->getDevice() ), Context( inGame->getContext() )
@@ -17,6 +18,22 @@ Shader::Shader( Shader_ID id, char* inName, Game* inGame )
 	strcat_s(buff, inName);
 	strcat_s(buff, ".ps.cso");
 	CompilePixelShader( buff );
+
+	D3D11_BUFFER_DESC cbDesc = {};
+	cbDesc.Usage = D3D11_USAGE_DEFAULT;
+	cbDesc.ByteWidth = sizeof(baseBuffer);
+	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbDesc.CPUAccessFlags = 0;
+
+	baseBuffer b = {Matrix(IDENTITY), Matrix(IDENTITY), Matrix(IDENTITY)};
+
+	D3D11_SUBRESOURCE_DATA InitData;
+	InitData.pSysMem = &b;
+	InitData.SysMemPitch = 0;
+	InitData.SysMemSlicePitch = 0;
+
+	HRESULT res = Device->CreateBuffer( &cbDesc, &InitData, &constBuff );
+	assert( res == S_OK );
 }
 
 Shader::~Shader(void)
@@ -108,4 +125,9 @@ ID3D11PixelShader* Shader::getPixelShader()
 ID3D11InputLayout* Shader::getVertexLayout()
 {
 	return vertexLayout;
+}
+
+ID3D11Buffer* Shader::getConstBuffer()
+{
+	return constBuff;
 }

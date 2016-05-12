@@ -99,6 +99,7 @@
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Material\Material.h" />
     <ClInclude Include="Model\Model.h" />
+    <ClInclude Include="Shader\ConstantBuffers.h" />
     <ClInclude Include="Shader\Shader.h" />
     <ClInclude Include="Shader\ShaderManager.h" />
   </ItemGroup>
