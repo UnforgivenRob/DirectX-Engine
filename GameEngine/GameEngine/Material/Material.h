@@ -7,7 +7,7 @@ class Shader;
 class Material
 {
 public:
-	Material( Game* inGame );
+	Material();
 	~Material(void);
 
 	virtual Shader* activate();

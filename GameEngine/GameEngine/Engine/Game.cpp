@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "Material.h"
 #include "ConstantBuffers.h"
+#include "GraphicsEngine.h"
 
 Shader* shade = 0;
 Model* model = 0;
@@ -25,26 +26,15 @@ Game::~Game()
 
 void Game::Initialize()
 {
+	Device = GraphicsEngine::getDevice();
+	Context = GraphicsEngine::getContext();
 }
 
 void Game::LoadContent()
 {
-	//D3D11_INPUT_ELEMENT_DESC vertexDesc[] =
-	//{
-	//	{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-	//	{"COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	//};
-
-	// Create the input layout
-	/*D3d11_
-    D3DX11_PASS_DESC passDesc;
-    mTech->GetPassByIndex(0)->GetDesc(&passDesc);
-	Device->CreateInputLayout(vertexDesc, 2, passDesc.pIAInputSignature, 
-	passDesc.IAInputSignatureSize, &mInputLayout));*/
-
-	shade = new Shader( Shader_ID::Base, "Base", this );
-	model = new Model( this );
-	mat = new Material( this );
+	shade = new Shader( Shader_ID::Base, "Base" );
+	model = new Model();
+	mat = new Material();
 
 }
 
@@ -99,19 +89,13 @@ void Game::Draw()
 
 	Context->DrawIndexed( 36, 0, 0 ); 
 
-	HRESULT res = SwapChain->Present(0, 0);
+	HRESULT res = GraphicsEngine::getSwapChain()->Present(0, 0);
 	assert( res == S_OK );
 }
 
 void Game::ClearBuffers()
 {
-	assert( Context );
-	assert( SwapChain );
-
-	Context->ClearRenderTargetView(RenderTargetView, &bgColor[x] );
-	Context->ClearDepthStencilView(DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
-	
-
+	GraphicsEngine::ClearBuffers( bgColor );
 }
 
 void Game::UnloadContent()

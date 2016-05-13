@@ -23,6 +23,9 @@ private:
 	Timer FullTimer;
 	Timer intervalTimer;
 	Vect bgColor;
+	
+	ID3D11Device* Device;
+	ID3D11DeviceContext* Context;
 };
 #endif
 

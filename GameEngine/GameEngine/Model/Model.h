@@ -2,12 +2,10 @@
 #define MODEL_H
 #include <d3d11.h>
 
-class Game;
-
 class Model
 {
 public:
-	Model( Game* inGame );
+	Model();
 	Model( const char* filename );
 	~Model();
 

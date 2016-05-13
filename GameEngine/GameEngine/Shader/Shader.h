@@ -7,12 +7,10 @@ enum class Shader_ID
 	Base,
 };
 
-class Game;
-
 class Shader
 {
 public:
-	Shader( Shader_ID id, char* inName, Game* inGame );
+	Shader( Shader_ID id, char* inName );
 	~Shader();
 
 	ID3D11VertexShader* getVertexShader();

@@ -3,9 +3,10 @@
 #include "Game.h"
 #include "FileSystem.h"
 #include "ConstantBuffers.h"
+#include "GraphicsEngine.h"
 
-Shader::Shader( Shader_ID id, char* inName, Game* inGame )
-	: id( id ), Device( inGame->getDevice() ), Context( inGame->getContext() )
+Shader::Shader( Shader_ID id, char* inName )
+	: id( id ), Device( GraphicsEngine::getDevice() ), Context( GraphicsEngine::getContext() )
 {
 	char buff[200];
 	

@@ -72,6 +72,9 @@
     <ClCompile Include="Material\Material.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\GraphicsEngine.cpp">
+      <Filter>Game Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -132,6 +135,9 @@
       <Filter>Materials</Filter>
     </ClInclude>
     <ClInclude Include="Shader\ConstantBuffers.h" />
+    <ClInclude Include="Engine\GraphicsEngine.h">
+      <Filter>Game Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib">

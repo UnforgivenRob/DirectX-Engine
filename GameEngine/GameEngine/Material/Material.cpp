@@ -1,9 +1,10 @@
 #include "Material.h"
 #include "Game.h"
 #include "Shader.h"
+#include "GraphicsEngine.h"
 
-Material::Material( Game* inGame )
-	: device( inGame->getDevice() ), context( inGame->getContext() )
+Material::Material()
+	: device( GraphicsEngine::getDevice() ), context( GraphicsEngine::getContext() )
 {
 	D3D11_RASTERIZER_DESC rastDesc = {};
 	rastDesc.FillMode = D3D11_FILL_SOLID;

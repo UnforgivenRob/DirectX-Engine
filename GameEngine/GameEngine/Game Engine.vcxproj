@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
     <ClCompile Include="Material\Material.cpp" />
     <ClCompile Include="Model\Model.cpp" />
@@ -97,6 +98,7 @@
     <ClInclude Include="..\MathEngine\VectApp.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
+    <ClInclude Include="Engine\GraphicsEngine.h" />
     <ClInclude Include="Material\Material.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Shader\ConstantBuffers.h" />

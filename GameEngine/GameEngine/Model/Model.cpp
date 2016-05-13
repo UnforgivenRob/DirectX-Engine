@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "MathEngine.h"
-#include "Game.h"
+#include "GraphicsEngine.h"
 
 struct vert
 {
@@ -15,7 +15,7 @@ struct vert
 
 };
 
-Model::Model( Game* inGame )
+Model::Model()
 	: vertexBuffer( 0 ), indexBuffer( 0 ), stride( sizeof(vert) ), offset( 0 )
 {
 	vert verts[] = 
@@ -44,7 +44,7 @@ Model::Model( Game* inGame )
 								2, 6, 5
 							};
 
-	ID3D11Device* device = inGame->getDevice();
+	ID3D11Device* device = GraphicsEngine::getDevice();
 
 	D3D11_BUFFER_DESC vertexDesc;
 	vertexDesc.Usage           = D3D11_USAGE_IMMUTABLE;
@@ -76,8 +76,8 @@ Model::Model( Game* inGame )
 	res = device->CreateBuffer( &indexDesc, &indexData, &indexBuffer );
 	assert( res == S_OK );
 
-	inGame->getContext()->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &offset ); 
-	inGame->getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 ); 
+	GraphicsEngine::getContext()->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &offset ); 
+	GraphicsEngine::getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 ); 
 }
 
 Model::Model( const char* filename )
