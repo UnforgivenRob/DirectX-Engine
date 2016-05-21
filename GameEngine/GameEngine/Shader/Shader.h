@@ -1,16 +1,17 @@
 #ifndef SHADER_H
 #define SHADER_H
 #include <d3d11.h>
+#include "Node.h"
 
-enum class Shader_ID
+enum Shader_ID
 {
 	Base,
 };
 
-class Shader
+class Shader : Node
 {
 public:
-	Shader( Shader_ID id, char* inName );
+	Shader( Shader_ID id, const char* inName );
 	~Shader();
 
 	ID3D11VertexShader* getVertexShader();

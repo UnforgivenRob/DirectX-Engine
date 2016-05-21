@@ -75,6 +75,13 @@
     <ClCompile Include="Engine\GraphicsEngine.cpp">
       <Filter>Game Engine</Filter>
     </ClCompile>
+    <ClCompile Include="ManagerList.cpp" />
+    <ClCompile Include="Material\MaterialManager.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="Material\BaseMat.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -137,6 +144,14 @@
     <ClInclude Include="Shader\ConstantBuffers.h" />
     <ClInclude Include="Engine\GraphicsEngine.h">
       <Filter>Game Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="ManagerList.h" />
+    <ClInclude Include="Material\MaterialManager.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Material\BaseMat.h">
+      <Filter>Materials</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

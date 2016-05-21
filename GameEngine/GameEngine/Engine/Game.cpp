@@ -2,15 +2,13 @@
 #include "Time.h"
 #include <stdio.h>
 #include <assert.h>
-#include "Shader.h"
+#include "ShaderManager.h"
 #include "Model.h"
-#include "Material.h"
+#include "MaterialManager.h"
 #include "ConstantBuffers.h"
 #include "GraphicsEngine.h"
 
-Shader* shade = 0;
 Model* model = 0;
-Material* mat = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -32,10 +30,9 @@ void Game::Initialize()
 
 void Game::LoadContent()
 {
-	shade = new Shader( Shader_ID::Base, "Base" );
+	ShaderManager::create( Shader_ID::Base, "Base", false );
+	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
 	model = new Model();
-	mat = new Material();
-
 }
 
 Matrix Rot = Matrix(IDENTITY);
@@ -68,7 +65,8 @@ void Game::Update()
 
 void Game::Draw()
 {
-	mat->activate();
+	
+	Shader* shade = MaterialManager::get( Material_ID::Base_Solid )->activate();
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
 
@@ -100,6 +98,6 @@ void Game::ClearBuffers()
 
 void Game::UnloadContent()
 {
-	delete shade;
+	ShaderManager::clear();
 	delete model;
 }

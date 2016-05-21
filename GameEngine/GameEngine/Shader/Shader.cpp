@@ -5,7 +5,7 @@
 #include "ConstantBuffers.h"
 #include "GraphicsEngine.h"
 
-Shader::Shader( Shader_ID id, char* inName )
+Shader::Shader( Shader_ID id, const char* inName )
 	: id( id ), Device( GraphicsEngine::getDevice() ), Context( GraphicsEngine::getContext() )
 {
 	char buff[200];
