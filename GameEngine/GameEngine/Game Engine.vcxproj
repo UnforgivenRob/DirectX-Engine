@@ -48,7 +48,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -77,6 +77,7 @@
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
+    <ClCompile Include="GraphicsObjects\GraphicsObject.cpp" />
     <ClCompile Include="ManagerList.cpp" />
     <ClCompile Include="Material\BaseMat.cpp" />
     <ClCompile Include="Material\Material.cpp" />
@@ -105,6 +106,7 @@
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GraphicsEngine.h" />
+    <ClInclude Include="GraphicsObjects\GraphicsObject.h" />
     <ClInclude Include="ManagerList.h" />
     <ClInclude Include="Material\BaseMat.h" />
     <ClInclude Include="Material\Material.h" />

@@ -91,6 +91,9 @@
     <ClCompile Include="Model\ModelManager.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="GraphicsObjects\GraphicsObject.cpp">
+      <Filter>GraphicsObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -170,6 +173,9 @@
     </ClInclude>
     <ClInclude Include="Model\ModelManager.h">
       <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjects\GraphicsObject.h">
+      <Filter>GraphicsObjects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
