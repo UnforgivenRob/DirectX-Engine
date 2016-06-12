@@ -82,6 +82,15 @@
     <ClCompile Include="Material\BaseMat.cpp">
       <Filter>Materials</Filter>
     </ClCompile>
+    <ClCompile Include="Model\FBX_Model.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Primitive.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\ModelManager.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -152,6 +161,15 @@
     </ClInclude>
     <ClInclude Include="Material\BaseMat.h">
       <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\FBX_Model.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Primitive.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\ModelManager.h">
+      <Filter>Models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

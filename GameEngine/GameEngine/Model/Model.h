@@ -1,13 +1,20 @@
 #ifndef MODEL_H
 #define MODEL_H
 #include <d3d11.h>
+#include "Node.h"
 
-class Model
+enum Model_ID
+{
+	Cube_Model,
+
+};
+
+class Model: public Node
 {
 public:
-	Model();
-	Model( const char* filename );
-	~Model();
+
+	Model( Model_ID id );
+	virtual ~Model();
 
 	ID3D11Buffer** getVertexBuffer();
 	ID3D11Buffer* getIndexBuffer();
@@ -19,10 +26,11 @@ protected:
 	ID3D11Buffer* indexBuffer;
 	unsigned int stride;
 	unsigned int offset;
+	Model_ID id;
 private:
-	virtual void initModel( const char* fileName );
 	
 	//prevent from being called
+	Model();
 	Model( Model& inModel );
 	Model& operator = ( Model& inModel );
 };

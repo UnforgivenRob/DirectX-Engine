@@ -3,12 +3,10 @@
 #include <stdio.h>
 #include <assert.h>
 #include "ShaderManager.h"
-#include "Model.h"
+#include "ModelManager.h"
 #include "MaterialManager.h"
 #include "ConstantBuffers.h"
 #include "GraphicsEngine.h"
-
-Model* model = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -31,11 +29,13 @@ void Game::Initialize()
 void Game::LoadContent()
 {
 	ShaderManager::create( Shader_ID::Base, "Base", false );
+
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
-	model = new Model();
+
+	ModelManager::createCube( Model_ID::Cube_Model );
 }
 
-Matrix Rot = Matrix(IDENTITY);
+Matrix Rot = Matrix (IDENTITY );
 
 void Game::Update()
 {
@@ -65,29 +65,29 @@ void Game::Update()
 
 void Game::Draw()
 {
-	
 	Shader* shade = MaterialManager::get( Material_ID::Base_Solid )->activate();
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
 
 	baseBuffer buf;
-	buf.model =Matrix(SCALE, .1f, .1f, .1f)  * Rot * Matrix(TRANS, .5f, .5f, .5f);
-	buf.proj = Matrix(IDENTITY);
-	buf.view = Matrix(IDENTITY);
+	buf.model = Matrix( SCALE, .1f, .1f, .1f )  * Rot * Matrix( TRANS, .5f, .5f, .5f );
+	buf.proj = Matrix( IDENTITY );
+	buf.view = Matrix( IDENTITY );
 
 	ID3D11Buffer* cBuf = shade->getConstBuffer();
-	Context->UpdateSubresource( cBuf, 0, nullptr, &buf, 0, 0);
+	Context->UpdateSubresource( cBuf, 0, nullptr, &buf, 0, 0 );
 	Context->VSSetConstantBuffers(0, 1, &cBuf );
 
+	Model* model = ModelManager::get( Model_ID::Cube_Model );
 	Context->IASetVertexBuffers( 0, 1, model->getVertexBuffer(), model->getStride(), model->getOffset() ); 
 	Context->IASetIndexBuffer( model->getIndexBuffer(), DXGI_FORMAT_R32_UINT, 0 ); 
 
-	Context->IASetInputLayout(shade->getVertexLayout());
-    Context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Context->IASetInputLayout( shade->getVertexLayout() );
+    Context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
 	Context->DrawIndexed( 36, 0, 0 ); 
 
-	HRESULT res = GraphicsEngine::getSwapChain()->Present(0, 0);
+	HRESULT res = GraphicsEngine::getSwapChain()->Present ( 0, 0 );
 	assert( res == S_OK );
 }
 
@@ -98,6 +98,7 @@ void Game::ClearBuffers()
 
 void Game::UnloadContent()
 {
+	MaterialManager::clear();
 	ShaderManager::clear();
-	delete model;
+	ModelManager::clear();
 }
