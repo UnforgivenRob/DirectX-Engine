@@ -6,15 +6,13 @@
 #include "ModelManager.h"
 #include "MaterialManager.h"
 #include "GraphicsObject.h"
-#include "GameObject.h"
+#include "GameObjectManager.h"
 #include "GraphicsEngine.h"
-
-GameObject* go = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
 {
-	bgColor = Vect( 0.3f, 0.3f, 0.3f, 1.0f );
+	bgColor = Vect( 0.3f, 0.35f, 0.3f, 1.0f );
 	FullTimer.tic();
 	intervalTimer.tic();
 }
@@ -38,9 +36,9 @@ void Game::LoadContent()
 	ModelManager::createCube( Model_ID::Cube_Model );
 
 	GraphicsObject* go1 = new GraphicsObject( Model_ID::Cube_Model, Material_ID::Base_Solid );
-	go = new GameObject( GameObject_ID::Cube, go1 );
-	go->setStaticScale( Matrix( SCALE, .1f, .1f, .1f ) );
-	go->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
+	GameObjectManager::create( GameObject_ID::Cube, go1 );
+	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, .1f, .1f, .1f ) );
+	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
 }
 
 void Game::Update()
@@ -51,13 +49,13 @@ void Game::Update()
 	Time current = FullTimer.toc();
 	
 	Matrix id = Matrix( IDENTITY );
-	go->update( current, id, id );
+	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, id );
 }
 
 void Game::Draw()
 {
 	Matrix id = Matrix( IDENTITY );
-	go->draw( id );
+	GameObjectManager::get( GameObject_ID::Cube )->draw( id );
 }
 
 void Game::ClearBuffers()
@@ -70,5 +68,5 @@ void Game::UnloadContent()
 	MaterialManager::clear();
 	ShaderManager::clear();
 	ModelManager::clear();
-	delete go;
+	GameObjectManager::clear();
 }

@@ -97,6 +97,9 @@
     <ClCompile Include="GameObjects\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>GameObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -184,6 +187,9 @@
       <Filter>GameObjects</Filter>
     </ClInclude>
     <ClInclude Include="GameObjects\GOData.h">
+      <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
   </ItemGroup>

@@ -77,6 +77,7 @@
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GraphicsEngine.cpp" />
     <ClCompile Include="Engine\Main.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GraphicsObjects\GraphicsObject.cpp" />
     <ClCompile Include="ManagerList.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GraphicsEngine.h" />
+    <ClInclude Include="GameObjectManager.h" />
     <ClInclude Include="GameObjects\GameObject.h" />
     <ClInclude Include="GameObjects\GOData.h" />
     <ClInclude Include="GraphicsObjects\GraphicsObject.h" />
