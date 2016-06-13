@@ -49,6 +49,9 @@
     <Filter Include="Materials">
       <UniqueIdentifier>{2d2ca0e1-7d2e-4ca3-9bb3-13a7cee72099}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Models\Primitives">
+      <UniqueIdentifier>{3723870c-1377-476b-9e47-216295e69ac7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -85,9 +88,6 @@
     <ClCompile Include="Model\FBX_Model.cpp">
       <Filter>Models</Filter>
     </ClCompile>
-    <ClCompile Include="Model\Primitive.cpp">
-      <Filter>Models</Filter>
-    </ClCompile>
     <ClCompile Include="Model\ModelManager.cpp">
       <Filter>Models</Filter>
     </ClCompile>
@@ -97,8 +97,17 @@
     <ClCompile Include="GameObjects\GameObject.cpp">
       <Filter>GameObjects</Filter>
     </ClCompile>
-    <ClCompile Include="GameObjectManager.cpp">
+    <ClCompile Include="Model\Primitive.cpp">
+      <Filter>Models\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\Cube.cpp">
+      <Filter>Models\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjects\GameObjectManager.cpp">
       <Filter>GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\GridModel.cpp">
+      <Filter>Models\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,9 +183,6 @@
     <ClInclude Include="Model\FBX_Model.h">
       <Filter>Models</Filter>
     </ClInclude>
-    <ClInclude Include="Model\Primitive.h">
-      <Filter>Models</Filter>
-    </ClInclude>
     <ClInclude Include="Model\ModelManager.h">
       <Filter>Models</Filter>
     </ClInclude>
@@ -189,8 +195,17 @@
     <ClInclude Include="GameObjects\GOData.h">
       <Filter>GameObjects</Filter>
     </ClInclude>
-    <ClInclude Include="GameObjectManager.h">
+    <ClInclude Include="Model\Primitive.h">
+      <Filter>Models\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\Cube.h">
+      <Filter>Models\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjects\GameObjectManager.h">
       <Filter>GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\GridModel.h">
+      <Filter>Models\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

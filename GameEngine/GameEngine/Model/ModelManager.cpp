@@ -1,5 +1,6 @@
 #include "ModelManager.h"
-#include "Primitive.h"
+#include "Cube.h"
+#include "GridModel.h"
 #include "FBX_Model.h"
 
 ManagerList* ModelManager::manager = 0;
@@ -41,13 +42,12 @@ void ModelManager::create( Model_ID id, const char* fileName )
 
 void ModelManager::createCube( Model_ID id )
 {
-	ModelManager::add( new Primitive( id ), id );
+	ModelManager::add( new Cube( id ), id );
 }
 
 void ModelManager::createGrid( Model_ID id, int width, int length, int step )
 {
-	id, width, length, step;
-	//ModelManager::add( new GridModel( id, width, length, step ), id );
+	ModelManager::add( new GridModel( id, width, length, step ), id );
 }
 
 void ModelManager::add(Model* inText, Model_ID id)

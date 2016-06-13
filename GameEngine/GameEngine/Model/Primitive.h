@@ -8,10 +8,10 @@ class Primitive : public Model
 public:
 	Primitive( Model_ID id );
 		
-	~Primitive();
+	virtual ~Primitive();
 
 private:
-	virtual void initModel();
+	virtual void initModel() = 0;
 	
 	//prevent from being called
 	Primitive();

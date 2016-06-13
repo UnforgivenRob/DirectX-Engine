@@ -42,3 +42,13 @@ unsigned int* Model::getOffset()
 {
 	return &offset;
 }
+
+unsigned int Model::getNumIndices()
+{
+	return numIndices;
+}
+
+unsigned int Model:: getNumVertices()
+{
+	return numVerts;
+}

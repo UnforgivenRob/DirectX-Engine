@@ -6,7 +6,7 @@
 enum Model_ID
 {
 	Cube_Model,
-
+	Grid_Model,
 };
 
 class Model: public Node
@@ -20,10 +20,14 @@ public:
 	ID3D11Buffer* getIndexBuffer();
 	unsigned int* getStride();
 	unsigned int* getOffset();
+	unsigned int getNumIndices();
+	unsigned int getNumVertices();
 
 protected:
 	ID3D11Buffer* vertexBuffer;
 	ID3D11Buffer* indexBuffer;
+	unsigned int numVerts;
+	unsigned int numIndices;
 	unsigned int stride;
 	unsigned int offset;
 	Model_ID id;

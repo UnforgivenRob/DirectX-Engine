@@ -44,7 +44,7 @@ void GraphicsObject::draw( Matrix& proj_Mat )
 	Context->IASetInputLayout( shade->getVertexLayout() );
     Context->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	Context->DrawIndexed( 36, 0, 0 ); 
+	Context->DrawIndexed( model->getNumIndices(), 0, 0 ); 
 
 	HRESULT res = GraphicsEngine::getSwapChain()->Present ( 0, 0 );
 	assert( res == S_OK );

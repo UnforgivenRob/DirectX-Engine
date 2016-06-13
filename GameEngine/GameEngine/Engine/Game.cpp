@@ -34,6 +34,7 @@ void Game::LoadContent()
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
 
 	ModelManager::createCube( Model_ID::Cube_Model );
+	ModelManager::createGrid( Model_ID::Grid_Model, 100, 100, 1 );
 
 	GraphicsObject* go1 = new GraphicsObject( Model_ID::Cube_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cube, go1 );
