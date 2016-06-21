@@ -48,7 +48,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -73,6 +73,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GraphicsEngine.cpp" />
@@ -107,6 +108,7 @@
     <ClInclude Include="..\MathEngine\Util.h" />
     <ClInclude Include="..\MathEngine\Vect.h" />
     <ClInclude Include="..\MathEngine\VectApp.h" />
+    <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GraphicsEngine.h" />

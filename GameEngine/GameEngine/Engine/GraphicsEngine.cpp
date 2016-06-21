@@ -174,14 +174,22 @@ void GraphicsEngine::OnResize()
 
 	engine.Context->OMSetRenderTargets( 1, &engine.RenderTargetView, engine.DepthStencilView );
 
-	engine.Viewport.TopLeftX = 0;
-	engine.Viewport.TopLeftY = 0;
+	engine.Viewport.TopLeftX = 0.0f;
+	engine.Viewport.TopLeftY = 0.0f;
 	engine.Viewport.Width    = static_cast<float>(engine.mClientWidth);
 	engine.Viewport.Height   = static_cast<float>(engine.mClientHeight);
 	engine.Viewport.MinDepth = 0.0f;
 	engine.Viewport.MaxDepth = 1.0f;
 
 	engine.Context->RSSetViewports( 1, &engine.Viewport );
+}
+
+void GraphicsEngine::setViewPort( const int posX, const int posY, const int width, const int height )
+{
+	posX, posY;
+	engine.mClientWidth = width;
+	engine.mClientHeight = height;
+	OnResize();
 }
 
 void GraphicsEngine::ClearBuffers( Vect& bgColor )

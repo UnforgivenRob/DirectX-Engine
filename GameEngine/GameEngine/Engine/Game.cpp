@@ -8,6 +8,9 @@
 #include "GraphicsObject.h"
 #include "GameObjectManager.h"
 #include "GraphicsEngine.h"
+#include "Camera.h"
+
+Camera* cam1 = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -29,6 +32,8 @@ void Game::Initialize()
 
 void Game::LoadContent()
 {
+	cam1 = new Camera( Camera1, Vect( 100.0f, 0.0f, 0.0f ), Vect ( 0.0f, 0.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
+	cam1->setFrustumData( 50.0f, 800.0f/600.0f, 0.1f, 10000.0f );
 	ShaderManager::create( Shader_ID::Base, "Base", false );
 
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
@@ -38,7 +43,7 @@ void Game::LoadContent()
 
 	GraphicsObject* go1 = new GraphicsObject( Model_ID::Cube_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cube, go1 );
-	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, .1f, .1f, .1f ) );
+	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
 	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
 }
 
@@ -50,13 +55,15 @@ void Game::Update()
 	Time current = FullTimer.toc();
 	
 	Matrix id = Matrix( IDENTITY );
-	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, id );
+	cam1->update( current );
+
+	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, cam1->getViewMat() );
 }
 
 void Game::Draw()
 {
-	Matrix id = Matrix( IDENTITY );
-	GameObjectManager::get( GameObject_ID::Cube )->draw( id );
+	//Matrix id = Matrix( IDENTITY );
+	GameObjectManager::get( GameObject_ID::Cube )->draw( cam1->getProjMat() );
 }
 
 void Game::ClearBuffers()

@@ -10,6 +10,7 @@ class GraphicsEngine
 public:
 	static void Activate( HINSTANCE mApp, const char* caption, bool bEnable4xMsaa, int clientWindth, int clientHeight );
 	static void OnResize();
+	static void setViewPort( const int posX, const int posY, const int width, const int height );
 	static void Deactivate();
 	static void ClearBuffers( Vect& bgColor );
 	static ID3D11Device* getDevice();
