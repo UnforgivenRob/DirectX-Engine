@@ -20,7 +20,6 @@ MainWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 LRESULT Engine::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-	hwnd, wParam, lParam;
 	switch( msg )
 	{
 	case WM_ACTIVATE:
@@ -45,6 +44,12 @@ LRESULT Engine::MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_LBUTTONUP:
 	case WM_MBUTTONUP:
 	case WM_RBUTTONUP:
+		return 0;
+	case WM_KEYDOWN:
+		OnKeyDown( wParam );
+		return 0;
+	case WM_KEYUP:
+		OnKeyUp( wParam );
 		return 0;
 	case WM_MOUSEMOVE:
 		return 0;

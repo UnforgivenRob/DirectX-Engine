@@ -19,6 +19,9 @@ public:
 	virtual void ClearBuffers() override;
 	virtual void UnloadContent() override;
 
+	virtual void OnKeyDown( WPARAM keyState ) override;
+	virtual void OnKeyUp( WPARAM keyState ) override;
+
 private:
 	Timer FullTimer;
 	Timer intervalTimer;

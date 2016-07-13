@@ -78,3 +78,43 @@ void Game::UnloadContent()
 	ModelManager::clear();
 	GameObjectManager::clear();
 }
+
+//keyboard input handling functings
+void Game::OnKeyDown( WPARAM keyState ) 
+{ 
+	float trans = 9.0f;//.9f;
+	switch ( keyState )
+	{
+	case VK_UP:
+		cam1->translateZ(-trans);
+		break;
+	case VK_DOWN:
+		cam1->translateZ(trans);
+		break;
+	case VK_LEFT:
+		cam1->translateX(-trans);
+		break;
+	case VK_RIGHT:
+		cam1->translateX(trans);
+		break;
+
+	default:
+		break;
+	} 
+}
+void Game::OnKeyUp( WPARAM keyState ) 
+{ 
+	switch ( keyState )
+	{
+	case VK_UP:
+		break;
+	case VK_DOWN:
+		break;
+	case VK_LEFT:
+		break;
+	case VK_RIGHT:
+		break;
+	default:
+		break;
+	} 
+}

@@ -34,6 +34,11 @@ private:
 	virtual void OnMouseDown( WPARAM btnState, int x, int y ){ btnState, x, y; }
 	virtual void OnMouseUp( WPARAM btnState, int x, int y )  { btnState, x, y; }
 	virtual void OnMouseMove( WPARAM btnState, int x, int y ){ btnState, x, y; }
+
+	//keyboard input handling functings
+	virtual void OnKeyDown( WPARAM keyState ) { keyState; }
+	virtual void OnKeyUp( WPARAM keyState ) { keyState; }
+
 protected:
 	bool bRun;
 
