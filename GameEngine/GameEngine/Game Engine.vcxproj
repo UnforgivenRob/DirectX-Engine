@@ -48,7 +48,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;$(SolutionDir)GameEngine\Input;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -81,6 +81,7 @@
     <ClCompile Include="GameObjects\GameObject.cpp" />
     <ClCompile Include="GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="GraphicsObjects\GraphicsObject.cpp" />
+    <ClCompile Include="Input\Keyboard.cpp" />
     <ClCompile Include="ManagerList.cpp" />
     <ClCompile Include="Material\BaseMat.cpp" />
     <ClCompile Include="Material\Material.cpp" />
@@ -116,6 +117,7 @@
     <ClInclude Include="GameObjects\GameObjectManager.h" />
     <ClInclude Include="GameObjects\GOData.h" />
     <ClInclude Include="GraphicsObjects\GraphicsObject.h" />
+    <ClInclude Include="Input\Keyboard.h" />
     <ClInclude Include="ManagerList.h" />
     <ClInclude Include="Material\BaseMat.h" />
     <ClInclude Include="Material\Material.h" />

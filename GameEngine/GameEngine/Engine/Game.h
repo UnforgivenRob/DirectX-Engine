@@ -18,6 +18,7 @@ public:
 	virtual void Draw() override;
 	virtual void ClearBuffers() override;
 	virtual void UnloadContent() override;
+	virtual void CheckInput();
 
 	virtual void OnKeyDown( WPARAM keyState ) override;
 	virtual void OnKeyUp( WPARAM keyState ) override;

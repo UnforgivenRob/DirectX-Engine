@@ -9,8 +9,10 @@
 #include "GameObjectManager.h"
 #include "GraphicsEngine.h"
 #include "Camera.h"
+#include "Keyboard.h"
 
 Camera* cam1 = 0;
+Keyboard* keyboard = 0;
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -53,7 +55,9 @@ void Game::Update()
 	intervalTimer.tic();
 
 	Time current = FullTimer.toc();
-	
+
+	CheckInput();
+
 	Matrix id = Matrix( IDENTITY );
 	cam1->update( current );
 
@@ -79,42 +83,104 @@ void Game::UnloadContent()
 	GameObjectManager::clear();
 }
 
+void Game::CheckInput()
+{
+	float trans = .2f;//9.0f;
+	float rot = .04f * MATH_PI_180;
+
+	if(keyboard->isPressed(Keyboard_Key::KEY_W))
+		{
+			cam1->translateZ(-trans);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_S))
+		{
+			cam1->translateZ(trans);
+		}
+		//along x(right) axis
+		if(keyboard->isPressed(Keyboard_Key::KEY_D))
+		{
+			cam1->translateX(trans);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_A))
+		{
+			cam1->translateX(-trans);
+		}
+
+		//along y(up) axis
+		if(keyboard->isPressed(Keyboard_Key::KEY_E))
+		{
+			cam1->translateY(trans);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_Q))
+		{
+			cam1->translateY(-trans);
+		}
+
+		//camera rotations
+		//pitching
+		if(keyboard->isPressed(Keyboard_Key::KEY_ARROW_UP))
+		{
+			cam1->pitch(-rot);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_ARROW_DOWN))
+		{
+			cam1->pitch(rot);
+		}
+
+		//yawing
+		if(keyboard->isPressed(Keyboard_Key::KEY_ARROW_LEFT))
+		{
+			cam1->yaw(-rot);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_ARROW_RIGHT))
+		{
+			cam1->yaw(rot);
+		}
+
+		//rolling
+		if(keyboard->isPressed(Keyboard_Key::KEY_Z))
+		{
+			cam1->roll(-rot);
+		}
+
+		if(keyboard->isPressed(Keyboard_Key::KEY_X))
+		{
+			cam1->roll(rot);
+		}
+}
+
+
 //keyboard input handling functings
 void Game::OnKeyDown( WPARAM keyState ) 
 { 
-	float trans = 9.0f;//.9f;
-	switch ( keyState )
+	keyState;
+	/*switch ( keyState )
 	{
 	case VK_UP:
-		cam1->translateZ(-trans);
-		break;
 	case VK_DOWN:
-		cam1->translateZ(trans);
-		break;
 	case VK_LEFT:
-		cam1->translateX(-trans);
-		break;
 	case VK_RIGHT:
-		cam1->translateX(trans);
 		break;
-
 	default:
 		break;
-	} 
+	} */
 }
 void Game::OnKeyUp( WPARAM keyState ) 
 { 
-	switch ( keyState )
-	{
-	case VK_UP:
-		break;
-	case VK_DOWN:
-		break;
-	case VK_LEFT:
-		break;
-	case VK_RIGHT:
-		break;
-	default:
-		break;
-	} 
+	keyState;
+	//switch ( keyState )
+	//{
+	//case VK_UP:
+	//case VK_DOWN:
+	//case VK_LEFT:
+	//case VK_RIGHT:
+	//	break;
+	//default:
+	//	break;
+	//} 
 }
