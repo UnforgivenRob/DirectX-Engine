@@ -9,4 +9,11 @@ struct baseBuffer
 	Matrix proj;
 };
 
+struct solidBuffer
+{
+	Matrix model;
+	Matrix view;
+	Matrix proj;
+	Vect   color;
+};
 #endif

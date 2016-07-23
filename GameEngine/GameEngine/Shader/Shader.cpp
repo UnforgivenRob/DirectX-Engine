@@ -5,7 +5,7 @@
 #include "ConstantBuffers.h"
 #include "GraphicsEngine.h"
 
-Shader::Shader( Shader_ID id, const char* inName )
+Shader::Shader( Shader_ID id, const char* inName, int cb_Size )
 	: id( id ), Device( GraphicsEngine::getDevice() ), Context( GraphicsEngine::getContext() )
 {
 	char buff[200];
@@ -22,7 +22,7 @@ Shader::Shader( Shader_ID id, const char* inName )
 
 	D3D11_BUFFER_DESC cbDesc = {};
 	cbDesc.Usage = D3D11_USAGE_DEFAULT;
-	cbDesc.ByteWidth = sizeof(baseBuffer);
+	cbDesc.ByteWidth = cb_Size;
 	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 	cbDesc.CPUAccessFlags = 0;
 

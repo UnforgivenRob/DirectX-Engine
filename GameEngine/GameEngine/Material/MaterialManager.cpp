@@ -1,7 +1,7 @@
 #include "MaterialManager.h"
 //#include "TextMat.h"
 #include "BaseMat.h"
-//#include "WireframeMat.h"
+#include "WireframeMat.h"
 //#include "PointLightMat.h"
 
 ManagerList* MaterialManager::manager = 0;
@@ -43,8 +43,7 @@ void MaterialManager::createBaseMat(Material_ID id, Shader* shader)
 
 void MaterialManager::createWireframeMat(Material_ID id, Shader* shader)
 {
-	id, shader;
-	//MaterialManager::add(new WireframeMat(id, shader), id);
+	MaterialManager::add(new WireframeMat(id, shader), id);
 }
 
 void MaterialManager::createTextMat(Material_ID id, Shader* shader)

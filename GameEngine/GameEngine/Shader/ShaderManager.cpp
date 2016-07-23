@@ -31,10 +31,10 @@ void ShaderManager::Deactivate()
 	delete manager;
 	manager = 0;
 }
-void ShaderManager::create(Shader_ID id, const char* name, bool bIsCompute)
+void ShaderManager::create(Shader_ID id, const char* name, int cb_Size, bool bIsCompute)
 {
 	bIsCompute;
-	ShaderManager::add(new Shader( id, name), id);
+	ShaderManager::add(new Shader( id, name, cb_Size ), id);
 }
 
 void ShaderManager::add(Shader* inShader, Shader_ID id)

@@ -6,15 +6,17 @@
 #include "ShaderManager.h"
 #include "ModelManager.h"
 #include "MaterialManager.h"
-#include "GraphicsObject.h"
+#include "GraphicsObject_Solid.h"
+#include "GraphicsObject_Base.h"
 #include "GameObjectManager.h"
 #include "GraphicsEngine.h"
 #include "InputManager.h"
+#include "ConstantBuffers.h"
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
 {
-	bgColor = Vect( 0.3f, 0.35f, 0.3f, 1.0f );
+	bgColor = Vect( 0.2f, 0.2f, 0.2f, 1.0f );
 	FullTimer.tic();
 	intervalTimer.tic();
 }
@@ -38,21 +40,30 @@ void Game::Initialize()
 
 void Game::LoadContent()
 {
-	CameraManager::create( Camera1, Vect( 100.0f, 0.0f, 0.0f ), Vect ( 0.0f, 0.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
+	CameraManager::create( Camera1, Vect( 100.0f, 50.0f, 0.0f ), Vect ( 0.0f, 10.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
 	CameraManager::get( Camera1 )->setFrustumData( 50.0f, 800.0f/600.0f, 0.1f, 10000.0f );
 	CameraManager::setActive( Camera1 );
 
-	ShaderManager::create( Shader_ID::Base, "Base", false );
+	ShaderManager::create( Shader_ID::Base, "Base", sizeof( baseBuffer ), false );
+	ShaderManager::create( Shader_ID::Solid, "Solid", sizeof( solidBuffer ), false );
 
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
+	MaterialManager::createWireframeMat( Material_ID::Solid_Wire, ShaderManager::get( Shader_ID::Solid ) );
 
 	ModelManager::createCube( Model_ID::Cube_Model );
 	ModelManager::createGrid( Model_ID::Grid_Model, 100, 100, 1 );
 
-	GraphicsObject* go1 = new GraphicsObject( Model_ID::Cube_Model, Material_ID::Base_Solid );
+	GraphicsObject* go1 = new GraphicsObject_Base( Model_ID::Cube_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cube, go1 );
 	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
-	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
+	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, .5f, 30.0f, .5f ) );
+
+	Vect color( 0.0f, 0.0f, 1.0f );
+	GraphicsObject* go2 = new GraphicsObject_Solid( Model_ID::Grid_Model, Material_ID::Solid_Wire, color );
+	GameObjectManager::create( GameObject_ID::Grid, go2 );
+	GameObjectManager::get( GameObject_ID::Grid )->setStaticRot( Matrix( ROT_XYZ, 90.0f * MATH_PI_180, 90.0f * MATH_PI_180, 0.0f * MATH_PI_180 ) );
+	GameObjectManager::get( GameObject_ID::Grid )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
+	GameObjectManager::get( GameObject_ID::Grid )->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
 }
 
 void Game::Update()
@@ -68,16 +79,20 @@ void Game::Update()
 	CameraManager::update( current );
 
 	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, CameraManager::getActive()->getViewMat() );
+	GameObjectManager::get( GameObject_ID::Grid )->update( current, id, CameraManager::getActive()->getViewMat() );
 }
 
 void Game::Draw()
 {
 	//Matrix id = Matrix( IDENTITY );
 	GameObjectManager::get( GameObject_ID::Cube )->draw( CameraManager::getActive()->getProjMat() );
+	GameObjectManager::get( GameObject_ID::Grid )->draw( CameraManager::getActive()->getProjMat() );
 }
 
 void Game::ClearBuffers()
 {
+	HRESULT res = GraphicsEngine::getSwapChain()->Present ( 0, 0 );
+	assert( res == S_OK );
 	GraphicsEngine::ClearBuffers( bgColor );
 }
 

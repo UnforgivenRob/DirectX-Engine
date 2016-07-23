@@ -9,7 +9,8 @@ enum Material_ID
 {
 	Base_Solid,
 	Base_Wire,
-
+	Solid_Solid,
+	Solid_Wire,
 };
 
 class Material : public Node

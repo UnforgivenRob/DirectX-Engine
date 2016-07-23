@@ -12,7 +12,7 @@ public:
 	virtual ~GraphicsObject();
 
 	void update( Matrix& inModel_Mat, Matrix& inView_Mat );
-	virtual void draw( Matrix& proj_Mat );// = 0;
+	virtual void draw( Matrix& proj_Mat ) = 0;
 	Model* getModel();
 	void setModel( Model_ID modID );
 	Material* getMaterial();

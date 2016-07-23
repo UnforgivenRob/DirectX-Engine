@@ -9,6 +9,7 @@
 
 enum GameObject_ID
 {
+	Grid,
 	Cube,
 };
 

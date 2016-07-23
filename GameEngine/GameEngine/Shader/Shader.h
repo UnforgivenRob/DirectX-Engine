@@ -6,12 +6,13 @@
 enum Shader_ID
 {
 	Base,
+	Solid,
 };
 
 class Shader : Node
 {
 public:
-	Shader( Shader_ID id, const char* inName );
+	Shader( Shader_ID id, const char* inName, int cb_Size );
 	~Shader();
 
 	ID3D11VertexShader* getVertexShader();

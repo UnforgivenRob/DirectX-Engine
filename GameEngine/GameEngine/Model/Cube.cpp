@@ -3,9 +3,9 @@
 
 struct vert
 {
-	float X;
-	float Y;
-	float Z;
+	float x;
+	float y;
+	float z;
 	float s;
 	float t;
 	float nx;

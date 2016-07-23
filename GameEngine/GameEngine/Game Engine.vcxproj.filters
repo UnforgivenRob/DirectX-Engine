@@ -127,6 +127,15 @@
     <ClCompile Include="Input\InputManager.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Material\WireframeMat.cpp">
+      <Filter>Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObjects\GraphicsObject_Solid.cpp">
+      <Filter>GraphicsObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsObjects\GraphicsObject_Base.cpp">
+      <Filter>GraphicsObjects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -237,6 +246,15 @@
     <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Material\WireframeMat.h">
+      <Filter>Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjects\GraphicsObject_Solid.h">
+      <Filter>GraphicsObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsObjects\GraphicsObject_Base.h">
+      <Filter>GraphicsObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib">
@@ -254,6 +272,12 @@
       <Filter>Shaders\Shaders</Filter>
     </FxCompile>
     <FxCompile Include="Shader\Shaders\Base.ps.hlsl">
+      <Filter>Shaders\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Shaders\Solid.vs.hlsl">
+      <Filter>Shaders\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Shaders\Solid.ps.hlsl">
       <Filter>Shaders\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
