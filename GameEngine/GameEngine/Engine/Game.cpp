@@ -2,17 +2,14 @@
 #include "Time.h"
 #include <stdio.h>
 #include <assert.h>
+#include "CameraManager.h"
 #include "ShaderManager.h"
 #include "ModelManager.h"
 #include "MaterialManager.h"
 #include "GraphicsObject.h"
 #include "GameObjectManager.h"
 #include "GraphicsEngine.h"
-#include "Camera.h"
-#include "Keyboard.h"
-
-Camera* cam1 = 0;
-Keyboard* keyboard = 0;
+#include "InputManager.h"
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -30,12 +27,21 @@ void Game::Initialize()
 {
 	Device = GraphicsEngine::getDevice();
 	Context = GraphicsEngine::getContext();
+
+	InputManager::Activate();
+	CameraManager::Activate();
+	ShaderManager::Activate();
+	MaterialManager::Activate();
+	ModelManager::Activate();
+	GameObjectManager::Activate();
 }
 
 void Game::LoadContent()
 {
-	cam1 = new Camera( Camera1, Vect( 100.0f, 0.0f, 0.0f ), Vect ( 0.0f, 0.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
-	cam1->setFrustumData( 50.0f, 800.0f/600.0f, 0.1f, 10000.0f );
+	CameraManager::create( Camera1, Vect( 100.0f, 0.0f, 0.0f ), Vect ( 0.0f, 0.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
+	CameraManager::get( Camera1 )->setFrustumData( 50.0f, 800.0f/600.0f, 0.1f, 10000.0f );
+	CameraManager::setActive( Camera1 );
+
 	ShaderManager::create( Shader_ID::Base, "Base", false );
 
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
@@ -59,15 +65,15 @@ void Game::Update()
 	CheckInput();
 
 	Matrix id = Matrix( IDENTITY );
-	cam1->update( current );
+	CameraManager::update( current );
 
-	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, cam1->getViewMat() );
+	GameObjectManager::get( GameObject_ID::Cube )->update( current, id, CameraManager::getActive()->getViewMat() );
 }
 
 void Game::Draw()
 {
 	//Matrix id = Matrix( IDENTITY );
-	GameObjectManager::get( GameObject_ID::Cube )->draw( cam1->getProjMat() );
+	GameObjectManager::get( GameObject_ID::Cube )->draw( CameraManager::getActive()->getProjMat() );
 }
 
 void Game::ClearBuffers()
@@ -77,16 +83,27 @@ void Game::ClearBuffers()
 
 void Game::UnloadContent()
 {
+	
 	MaterialManager::clear();
 	ShaderManager::clear();
 	ModelManager::clear();
 	GameObjectManager::clear();
+	CameraManager::clear();
+
+	MaterialManager::Deactivate();
+	ShaderManager::Deactivate();
+	ModelManager::Deactivate();
+	GameObjectManager::Deactivate();
+	CameraManager::Deactivate();
+	InputManager::Deactivate();
 }
 
 void Game::CheckInput()
 {
 	float trans = .2f;//9.0f;
 	float rot = .04f * MATH_PI_180;
+	Camera* cam1 = CameraManager::getActive();
+	Keyboard* keyboard = InputManager::getKeyboard();
 
 	if(keyboard->isPressed(Keyboard_Key::KEY_W))
 		{

@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera\Camera.cpp" />
+    <ClCompile Include="Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\Game.cpp" />
     <ClCompile Include="Engine\GraphicsEngine.cpp" />
@@ -82,6 +83,7 @@
     <ClCompile Include="GameObjects\GameObjectManager.cpp" />
     <ClCompile Include="GraphicsObjects\GraphicsObject.cpp" />
     <ClCompile Include="Input\Keyboard.cpp" />
+    <ClCompile Include="Input\InputManager.cpp" />
     <ClCompile Include="ManagerList.cpp" />
     <ClCompile Include="Material\BaseMat.cpp" />
     <ClCompile Include="Material\Material.cpp" />
@@ -110,6 +112,7 @@
     <ClInclude Include="..\MathEngine\Vect.h" />
     <ClInclude Include="..\MathEngine\VectApp.h" />
     <ClInclude Include="Camera\Camera.h" />
+    <ClInclude Include="Camera\CameraManager.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\Game.h" />
     <ClInclude Include="Engine\GraphicsEngine.h" />
@@ -117,6 +120,7 @@
     <ClInclude Include="GameObjects\GameObjectManager.h" />
     <ClInclude Include="GameObjects\GOData.h" />
     <ClInclude Include="GraphicsObjects\GraphicsObject.h" />
+    <ClInclude Include="Input\InputManager.h" />
     <ClInclude Include="Input\Keyboard.h" />
     <ClInclude Include="ManagerList.h" />
     <ClInclude Include="Material\BaseMat.h" />

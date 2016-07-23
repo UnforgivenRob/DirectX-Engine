@@ -121,6 +121,12 @@
     <ClCompile Include="Input\Keyboard.cpp">
       <Filter>Input</Filter>
     </ClCompile>
+    <ClCompile Include="Camera\CameraManager.cpp">
+      <Filter>Cameras</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -223,6 +229,12 @@
       <Filter>Cameras</Filter>
     </ClInclude>
     <ClInclude Include="Input\Keyboard.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\CameraManager.h">
+      <Filter>Cameras</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\InputManager.h">
       <Filter>Input</Filter>
     </ClInclude>
   </ItemGroup>
