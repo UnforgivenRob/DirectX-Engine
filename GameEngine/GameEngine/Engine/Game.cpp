@@ -52,8 +52,9 @@ void Game::LoadContent()
 
 	ModelManager::createCube( Model_ID::Cube_Model );
 	ModelManager::createGrid( Model_ID::Grid_Model, 100, 100, 1 );
+	ModelManager::createCylinder( Model_ID::Cylinder_Model );
 
-	GraphicsObject* go1 = new GraphicsObject_Base( Model_ID::Cube_Model, Material_ID::Base_Solid );
+	GraphicsObject* go1 = new GraphicsObject_Base( Model_ID::Cylinder_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cube, go1 );
 	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
 	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, .5f, 30.0f, .5f ) );

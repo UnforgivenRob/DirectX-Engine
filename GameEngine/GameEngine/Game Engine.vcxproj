@@ -97,6 +97,7 @@
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelManager.cpp" />
     <ClCompile Include="Model\Primitive.cpp" />
+    <ClCompile Include="Model\Cylinder.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
     <ClCompile Include="Shader\ShaderManager.cpp" />
   </ItemGroup>
@@ -133,6 +134,7 @@
     <ClInclude Include="Material\MaterialManager.h" />
     <ClInclude Include="Material\WireframeMat.h" />
     <ClInclude Include="Model\Cube.h" />
+    <ClInclude Include="Model\Cylinder.h" />
     <ClInclude Include="Model\FBX_Model.h" />
     <ClInclude Include="Model\GridModel.h" />
     <ClInclude Include="Model\Model.h" />

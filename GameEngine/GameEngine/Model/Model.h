@@ -7,6 +7,7 @@ enum Model_ID
 {
 	Cube_Model,
 	Grid_Model,
+	Cylinder_Model,
 };
 
 class Model: public Node

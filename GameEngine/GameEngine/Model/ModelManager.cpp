@@ -1,5 +1,6 @@
 #include "ModelManager.h"
 #include "Cube.h"
+#include "Cylinder.h"
 #include "GridModel.h"
 #include "FBX_Model.h"
 
@@ -48,6 +49,11 @@ void ModelManager::createCube( Model_ID id )
 void ModelManager::createGrid( Model_ID id, int width, int length, int step )
 {
 	ModelManager::add( new GridModel( id, width, length, step ), id );
+}
+
+void ModelManager::createCylinder( Model_ID id )
+{
+	ModelManager::add( new Cylinder( id ), id );
 }
 
 void ModelManager::add(Model* inText, Model_ID id)
