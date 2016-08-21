@@ -100,6 +100,7 @@
     <ClCompile Include="Model\Cylinder.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
     <ClCompile Include="Shader\ShaderManager.cpp" />
+    <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\File\FileSystem.h" />
@@ -144,6 +145,7 @@
     <ClInclude Include="Shader\ConstantBuffers.h" />
     <ClInclude Include="Shader\Shader.h" />
     <ClInclude Include="Shader\ShaderManager.h" />
+    <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\libs\Time\lib\Time_Debug.lib" />

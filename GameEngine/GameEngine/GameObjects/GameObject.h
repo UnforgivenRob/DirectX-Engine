@@ -11,6 +11,8 @@ enum GameObject_ID
 {
 	Grid,
 	Cube,
+	Cylinder,
+	Sphere,
 };
 
 class GameObject : public Node

@@ -13,6 +13,7 @@ public:
 	static void createCube( Model_ID id );
 	static void createGrid( Model_ID id, int width, int length, int step );
 	static void createCylinder( Model_ID id ); 
+	static void createSphere( Model_ID id );
 	
 
 	static void add(Model* inText, Model_ID id);

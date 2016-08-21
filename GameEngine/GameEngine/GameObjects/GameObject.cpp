@@ -23,9 +23,9 @@ void GameObject::update(Time currentTime, Matrix& inWorld_Mat, Matrix& view_Mat)
 	currentTime;
 	if(id == GameObject_ID::Cube )
 	{
-		data->Rotation *= Matrix(ROT_XYZ, .0005f, .0005f, .0005f );
+		data->Rotation *= Matrix(ROT_XYZ, .00005f, .00005f, .00005f );
 	}
-	world_Mat =  inWorld_Mat * data->Scale * data->Rotation * data->Translation;
+	world_Mat =  data->Scale * data->Rotation * data->Translation * inWorld_Mat;
 	Matrix id = Matrix( IDENTITY );
 	graphicsObj->update( world_Mat, view_Mat );
 }

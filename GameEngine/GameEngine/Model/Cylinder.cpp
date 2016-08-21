@@ -142,7 +142,4 @@ void Cylinder::initModel()
 	GraphicsEngine::getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 ); 
 	numVerts = 42;
 	numIndices = 80 * 3;
-
-	//delete[] verts;
-	//delete[] indices;
 }

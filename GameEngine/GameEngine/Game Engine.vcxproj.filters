@@ -139,6 +139,9 @@
     <ClCompile Include="Model\Cylinder.cpp">
       <Filter>Models\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="Sphere.cpp">
+      <Filter>Models\Primitives</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\libs\Time\include\Time.h">
@@ -259,6 +262,9 @@
       <Filter>GraphicsObjects</Filter>
     </ClInclude>
     <ClInclude Include="Model\Cylinder.h">
+      <Filter>Models\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="Sphere.h">
       <Filter>Models\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
