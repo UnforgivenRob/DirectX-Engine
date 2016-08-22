@@ -76,35 +76,35 @@ void Cylinder::initModel()
 	for( int i = 0; i < 20; ++i )
 	{
 		indices[ i * 3 ] = 0;
-		indices[ i * 3 + 1 ] = i + 1;
-		indices[ i * 3 + 2 ] = i + 2;
+		indices[ i * 3 + 1 ] = i + 2;
+		indices[ i * 3 + 2 ] = i + 1;
 	}
-	indices[59] = 1;
+	indices[58] = 1;
 
 	for( int i = 20; i < 40; ++i )
 	{
 		indices[ i * 3 ] = 21;
-		indices[ i * 3 + 1 ] = i + 3;
-		indices[ i * 3 + 2 ] = i + 2;
+		indices[ i * 3 + 1 ] = i + 2;
+		indices[ i * 3 + 2 ] = i + 3;
 	}
-	indices[118] = 22;
+	indices[119] = 22;
 
 	for( int i = 40; i < 60; ++i )
 	{
 		indices[ i * 3 ] = i - 39;
-		indices[ i * 3 + 1 ] = i - 17;
-		indices[ i * 3 + 2 ] = i - 38;
+		indices[ i * 3 + 1 ] = i - 38;
+		indices[ i * 3 + 2 ] = i - 17;
 	}
-	indices[178] = 22;
-	indices[179] = 1;
+	indices[178] = 1;
+	indices[179] = 22;
 
 	for( int i = 60; i < 80; ++i )
 	{
-		indices[ i * 3 ] = i - 38;
-		indices[ i * 3 + 1 ] = i - 37;
+		indices[ i * 3 ] = i - 37;
+		indices[ i * 3 + 1 ] = i - 38;
 		indices[ i * 3 + 2 ] = i - 59;
 	}
-	indices[238] = 22;
+	indices[237] = 22;
 
 	ID3D11Device* device = GraphicsEngine::getDevice();
 

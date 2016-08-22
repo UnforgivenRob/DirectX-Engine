@@ -67,41 +67,41 @@ void Sphere::initModel()
 	for( int i = 0; i < 20; ++i )
 	{
 		indices[ i * 3 ] = 0;
-		indices[ i * 3 + 1 ] = i + 1;
-		indices[ i * 3 + 2 ] = i + 2;
+		indices[ i * 3 + 1 ] = i + 2;
+		indices[ i * 3 + 2 ] = i + 1;
 	}
 
-	indices[59] = 1;
+	indices[58] = 1;
 	for( int j = 0; j < 9; ++j )
 	{
 		int curIndex = j * 120 + 60;
 		int curVert = j * 20;
 		for( int i = 0; i < 20; ++i )
 		{
-			indices[ curIndex + ( i * 6 ) ]		=  curVert + i + 1;
+			indices[ curIndex + ( i * 6 ) ]		=  curVert + i + 2;
 			indices[ curIndex + ( i * 6 ) + 1 ] = curVert + 20 + i + 1;
-			indices[ curIndex + ( i * 6 ) + 2 ] = curVert + i + 2;
+			indices[ curIndex + ( i * 6 ) + 2 ] = curVert + i + 1;
 
 			indices[ curIndex + ( i * 6 ) + 3 ] = curVert + i + 2;
-			indices[ curIndex + ( i * 6 ) + 4 ] = curVert + 20 + i + 1;
-			indices[ curIndex + ( i * 6 ) + 5 ] = curVert + 20 + i + 2;
+			indices[ curIndex + ( i * 6 ) + 4 ] = curVert + 20 + i + 2;
+			indices[ curIndex + ( i * 6 ) + 5 ] = curVert + 20 + i + 1;
 		}
-		indices[ curIndex + 120 - 1 ] = curVert + 21;
+		indices[ curIndex + 120 - 2 ] = curVert + 21;
 		indices[ curIndex + 120 - 3 ] = curVert + 1;
-		indices[ curIndex + 120 - 4 ] = curVert + 1;
+		indices[ curIndex + 120 - 6 ] = curVert + 1;
 	}
 
 	int vertIndex = 180;
 	for( int i = 20 + ( 10 * 40 ); i < 20 + 20 + ( 10 * 40 ); ++i )
 	{
-		indices[ i * 3 ] = vertIndex + 1;
+		indices[ i * 3 ] = vertIndex + 2;
 		indices[ i * 3 + 1 ] = 201; 
-		indices[ i * 3 + 2 ] = vertIndex + 2;
+		indices[ i * 3 + 2 ] = vertIndex + 1;
 
 		vertIndex++;
 	}
 
-	indices[3 * (20 + 20 + 10* 40) - 1 ] = 181;
+	indices[3 * (20 + 20 + 10* 40) - 3 ] = 181;
 
 	ID3D11Device* device = GraphicsEngine::getDevice();
 

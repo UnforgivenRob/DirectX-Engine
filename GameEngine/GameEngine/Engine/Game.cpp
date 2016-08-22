@@ -58,17 +58,17 @@ void Game::LoadContent()
 	GraphicsObject* go1 = new GraphicsObject_Base( Model_ID::Cube_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cube, go1 );
 	GameObjectManager::get( GameObject_ID::Cube )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
-	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, 100.5f, 30.0f, .5f ) );
+	GameObjectManager::get( GameObject_ID::Cube )->setStaticTrans( Matrix( TRANS, 50.0f, 30.0f, .5f ) );
 
 	GraphicsObject* go2 = new GraphicsObject_Base( Model_ID::Cylinder_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Cylinder, go2 );
 	GameObjectManager::get( GameObject_ID::Cylinder )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
-	GameObjectManager::get( GameObject_ID::Cylinder )->setStaticTrans( Matrix( TRANS, .5f, 30.0f, .5f ) );
+	GameObjectManager::get( GameObject_ID::Cylinder )->setStaticTrans( Matrix( TRANS, 0.0f, 30.0f, .5f ) );
 
 	GraphicsObject* go3 = new GraphicsObject_Base( Model_ID::Sphere_Model, Material_ID::Base_Solid );
 	GameObjectManager::create( GameObject_ID::Sphere, go3 );
 	GameObjectManager::get( GameObject_ID::Sphere )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
-	GameObjectManager::get( GameObject_ID::Sphere )->setStaticTrans( Matrix( TRANS, -100.5f, 30.0f, .5f ) );
+	GameObjectManager::get( GameObject_ID::Sphere )->setStaticTrans( Matrix( TRANS, -50.0f, 30.0f, .5f ) );
 
 	Vect color( 0.0f, 0.0f, 1.0f );
 	GraphicsObject* go4 = new GraphicsObject_Solid( Model_ID::Grid_Model, Material_ID::Solid_Wire, color );
@@ -131,8 +131,8 @@ void Game::UnloadContent()
 
 void Game::CheckInput()
 {
-	float trans = .02f;//9.0f;
-	float rot = .008f * MATH_PI_180;
+	float trans = .04f;//9.0f;
+	float rot = .016f * MATH_PI_180;
 	Camera* cam1 = CameraManager::getActive();
 	Keyboard* keyboard = InputManager::getKeyboard();
 
