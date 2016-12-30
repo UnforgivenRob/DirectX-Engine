@@ -1,0 +1,1 @@
+copy *.rob ..\..\GameEngine\src\spinnycube

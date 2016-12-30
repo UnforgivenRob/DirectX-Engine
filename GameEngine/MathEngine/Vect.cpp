@@ -93,21 +93,21 @@ float& Vect::operator [](const w_enum)
 
 //set functions
 //xyz setter
-void Vect::set(const float x, const float y, const float z)
+void Vect::set(const float inX, const float inY, const float inZ)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
+	this->x = inX;
+	this->y = inY;
+	this->z = inZ;
 	this->w = 1.0f;
 }
 
 //4val setter
-void Vect::set(const float x, const float y, const float z, const float w)
+void Vect::set(const float inX, const float inY, const float inZ, const float inW)
 {
-	this->x = x;
-	this->y = y;
-	this->z = z;
-	this->w = w;
+	this->x = inX;
+	this->y = inY;
+	this->z = inZ;
+	this->w = inW;
 }
 
 //Vect setter
@@ -245,20 +245,20 @@ float Vect::getAngle(const Vect& v2)
 	return acosf(dot / (this->mag() * v2.mag()));
 }
 
-const Vect Vect::operator * (const Matrix& m)
+const Vect Vect::operator * (const Matrix& inM)
 {
-	return Vect(this->x * m[m0] + this->y * m[m4] + this->z * m[m8] + this->w * m[m12],
-				this->x * m[m1] + this->y * m[m5] + this->z * m[m9] + this->w * m[m13],
-				this->x * m[m2] + this->y * m[m6] + this->z * m[m10] + this->w * m[m14],
-				this->x * m[m3] + this->y * m[m7] + this->z * m[m11] + this->w * m[m15]);
+	return Vect(this->x * inM[m0] + this->y * inM[m4] + this->z * inM[m8] + this->w * inM[m12],
+				this->x * inM[m1] + this->y * inM[m5] + this->z * inM[m9] + this->w * inM[m13],
+				this->x * inM[m2] + this->y * inM[m6] + this->z * inM[m10] + this->w * inM[m14],
+				this->x * inM[m3] + this->y * inM[m7] + this->z * inM[m11] + this->w * inM[m15]);
 }
 
-void const Vect::operator *= (const Matrix& m)
+void const Vect::operator *= (const Matrix& inM)
 {
-	float tmpX = this->x * m[m0] + this->y * m[m4] + this->z * m[m8] + this->w * m[m12];
-	float tmpY = this->x * m[m1] + this->y * m[m5] + this->z * m[m9] + this->w * m[m13];
-	float tmpZ = this->x * m[m2] + this->y * m[m6] + this->z * m[m10] + this->w * m[m14];
-	float tmpW = this->x * m[m3] + this->y * m[m7] + this->z * m[m11] + this->w * m[m15];
+	float tmpX = this->x * inM[m0] + this->y * inM[m4] + this->z * inM[m8] + this->w * inM[m12];
+	float tmpY = this->x * inM[m1] + this->y * inM[m5] + this->z * inM[m9] + this->w * inM[m13];
+	float tmpZ = this->x * inM[m2] + this->y * inM[m6] + this->z * inM[m10] + this->w * inM[m14];
+	float tmpW = this->x * inM[m3] + this->y * inM[m7] + this->z * inM[m11] + this->w * inM[m15];
 
 	this->x = tmpX;
 	this->y = tmpY;
