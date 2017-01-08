@@ -1,5 +1,6 @@
 rmdir /S /Q Debug
 rmdir /S /Q Release
+rmdir /S /Q ipch
 del /F /S *.sdf
 del /F /S /A:H *.suo
 del /F /S "Game Engine.VC"
