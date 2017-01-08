@@ -4,6 +4,7 @@
 #include "engine.h"
 #include "Timer.h"
 #include "MathEngine.h"
+#include "FileSystem.h"
 
 class Game :
 	public Engine
@@ -24,6 +25,7 @@ public:
 	virtual void OnKeyUp( WPARAM keyState ) override;
 
 private:
+	FileHandle fh;
 	Timer FullTimer;
 	Timer intervalTimer;
 	Vect bgColor;

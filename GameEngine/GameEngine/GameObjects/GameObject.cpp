@@ -20,7 +20,7 @@ GameObject::~GameObject()
 
 void GameObject::update(Time currentTime, Matrix& inWorld_Mat, Matrix& view_Mat)
 {
-	currentTime;
+	/*currentTime;*/
 	if(id == GameObject_ID::Cube )
 	{
 		data->Rotation *= Matrix(ROT_XYZ, .0005f, .0005f, .0005f );

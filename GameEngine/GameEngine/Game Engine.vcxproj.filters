@@ -148,14 +148,11 @@
     <ClCompile Include="FBX_Loader.cpp">
       <Filter>Importer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Time\Timer.cpp">
+      <Filter>_Time\include</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libs\Time\include\Time.h">
-      <Filter>_Time\include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libs\Time\include\Timer.h">
-      <Filter>_Time\include</Filter>
-    </ClInclude>
     <ClInclude Include="..\MathEngine\Constants.h">
       <Filter>_MathEngine\include</Filter>
     </ClInclude>
@@ -279,16 +276,19 @@
     <ClInclude Include="PackageHeaders.h">
       <Filter>Importer</Filter>
     </ClInclude>
+    <ClInclude Include="..\Time\Time.h">
+      <Filter>_Time\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\libs\Time\lib\Time_Debug.lib">
-      <Filter>_Time\lib</Filter>
-    </Library>
     <Library Include="Debug\MathEngine_Debug.lib">
       <Filter>_MathEngine\lib</Filter>
     </Library>
     <Library Include="Debug\File_Debug.lib">
       <Filter>_File\lib</Filter>
+    </Library>
+    <Library Include="Debug\Time_Debug.lib">
+      <Filter>_Time\lib</Filter>
     </Library>
   </ItemGroup>
   <ItemGroup>

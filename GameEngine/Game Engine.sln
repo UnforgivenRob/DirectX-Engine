@@ -1,9 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game Engine", "GameEngine\Game Engine.vcxproj", "{E0CCB2A4-BEF9-4C62-8258-F477A502D182}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5ACE6300-6196-4C7D-81CB-9AF09421C312} = {5ACE6300-6196-4C7D-81CB-9AF09421C312}
+		{397C6337-A58D-467D-A90E-808A05F8F6A4} = {397C6337-A58D-467D-A90E-808A05F8F6A4}
 		{5122B556-8547-48D7-ACF6-1466C0180FF4} = {5122B556-8547-48D7-ACF6-1466C0180FF4}
 	EndProjectSection
 EndProject
@@ -11,24 +14,52 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MathEngine", "MathEngine\Ma
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "File", "File\File.vcxproj", "{5ACE6300-6196-4C7D-81CB-9AF09421C312}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Time", "Time\Time.vcxproj", "{397C6337-A58D-467D-A90E-808A05F8F6A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|ARM = Release|ARM
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|ARM.ActiveCfg = Debug|Win32
 		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|Win32.Build.0 = Debug|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Debug|x64.ActiveCfg = Debug|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|ARM.ActiveCfg = Release|Win32
 		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|Win32.ActiveCfg = Release|Win32
 		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|Win32.Build.0 = Release|Win32
+		{E0CCB2A4-BEF9-4C62-8258-F477A502D182}.Release|x64.ActiveCfg = Release|Win32
+		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Debug|ARM.ActiveCfg = Debug|Win32
 		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Debug|Win32.Build.0 = Debug|Win32
+		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Debug|x64.ActiveCfg = Debug|Win32
+		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Release|ARM.ActiveCfg = Release|Win32
 		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Release|Win32.ActiveCfg = Release|Win32
 		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Release|Win32.Build.0 = Release|Win32
+		{5122B556-8547-48D7-ACF6-1466C0180FF4}.Release|x64.ActiveCfg = Release|Win32
+		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Debug|ARM.ActiveCfg = Debug|Win32
 		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Debug|Win32.Build.0 = Debug|Win32
+		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Debug|x64.ActiveCfg = Debug|Win32
+		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Release|ARM.ActiveCfg = Release|Win32
 		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Release|Win32.ActiveCfg = Release|Win32
 		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Release|Win32.Build.0 = Release|Win32
+		{5ACE6300-6196-4C7D-81CB-9AF09421C312}.Release|x64.ActiveCfg = Release|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Debug|ARM.ActiveCfg = Debug|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Debug|Win32.Build.0 = Debug|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Debug|x64.ActiveCfg = Debug|x64
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Debug|x64.Build.0 = Debug|x64
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Release|ARM.ActiveCfg = Release|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Release|Win32.ActiveCfg = Release|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Release|Win32.Build.0 = Release|Win32
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Release|x64.ActiveCfg = Release|x64
+		{397C6337-A58D-467D-A90E-808A05F8F6A4}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

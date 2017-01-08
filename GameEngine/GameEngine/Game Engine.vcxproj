@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E0CCB2A4-BEF9-4C62-8258-F477A502D182}</ProjectGuid>
     <RootNamespace>GameEngine</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -73,6 +74,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Time\Timer.cpp" />
     <ClCompile Include="Camera\Camera.cpp" />
     <ClCompile Include="Camera\CameraManager.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
@@ -105,8 +107,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\File\FileSystem.h" />
-    <ClInclude Include="..\libs\Time\include\Time.h" />
-    <ClInclude Include="..\libs\Time\include\Timer.h" />
     <ClInclude Include="..\MathEngine\Constants.h" />
     <ClInclude Include="..\MathEngine\Enum.h" />
     <ClInclude Include="..\MathEngine\MathApp.h" />
@@ -117,6 +117,7 @@
     <ClInclude Include="..\MathEngine\Util.h" />
     <ClInclude Include="..\MathEngine\Vect.h" />
     <ClInclude Include="..\MathEngine\VectApp.h" />
+    <ClInclude Include="..\Time\Time.h" />
     <ClInclude Include="Camera\Camera.h" />
     <ClInclude Include="Camera\CameraManager.h" />
     <ClInclude Include="Engine\Engine.h" />
@@ -151,9 +152,9 @@
     <ClInclude Include="Sphere.h" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\libs\Time\lib\Time_Debug.lib" />
     <Library Include="Debug\File_Debug.lib" />
     <Library Include="Debug\MathEngine_Debug.lib" />
+    <Library Include="Debug\Time_Debug.lib" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Shaders\Base.ps.hlsl">

@@ -12,17 +12,20 @@
 #include "GraphicsEngine.h"
 #include "InputManager.h"
 #include "ConstantBuffers.h"
+#include <dos.h>
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
 {
 	bgColor = Vect( 0.2f, 0.2f, 0.2f, 1.0f );
+	
 	FullTimer.tic();
 	intervalTimer.tic();
 }
 
 Game::~Game()
 {
+	File::close(fh);
 }
 
 void Game::Initialize()
