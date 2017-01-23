@@ -549,10 +549,10 @@ bool Quat::isEquivalent(const Quat& inQuat, const float tolerance)
 	else
 	{
 		//one or the other is negative
-		return (Util::isEqual(fabs(this->qx), fabs(inQuat.qx), tolerance))
-			 &&(Util::isEqual(fabs(this->qy), fabs(inQuat.qy), tolerance))
-			 &&(Util::isEqual(fabs(this->qz), fabs(inQuat.qz), tolerance))
-			 &&(Util::isEqual(fabs(this->qw), fabs(inQuat.qw), tolerance));
+		return (Util::isEqual(fabsf(this->qx), fabsf(inQuat.qx), tolerance))
+			 &&(Util::isEqual(fabsf(this->qy), fabsf(inQuat.qy), tolerance))
+			 &&(Util::isEqual(fabsf(this->qz), fabsf(inQuat.qz), tolerance))
+			 &&(Util::isEqual(fabsf(this->qw), fabsf(inQuat.qw), tolerance));
 	}
 }
 

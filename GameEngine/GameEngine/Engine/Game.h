@@ -24,6 +24,17 @@ public:
 	virtual void OnKeyDown( WPARAM keyState ) override;
 	virtual void OnKeyUp( WPARAM keyState ) override;
 
+	//overload operator new and delete to ensure aligned 16
+	void* operator new(size_t i)
+	{
+		return _mm_malloc(i, 16);
+	}
+
+	void operator delete(void* p)
+	{
+		return _mm_free(p);
+	}
+
 private:
 	FileHandle fh;
 	Timer FullTimer;

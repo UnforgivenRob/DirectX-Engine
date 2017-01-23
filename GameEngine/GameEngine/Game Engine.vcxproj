@@ -48,7 +48,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;$(SolutionDir)GameEngine\Input;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>

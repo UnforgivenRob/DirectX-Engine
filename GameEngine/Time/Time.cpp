@@ -44,10 +44,10 @@ Time::Time(const Duration duration)
 		this->_rawTime = (Time::Representation)( ( 60.0f * 60.0f ) / secondsPerCount );
 		break;
 	case TIME_MIN:
-		this->_rawTime = LLONG_MIN;
+		this->_rawTime = LONG_MIN;
 		break;
 	case TIME_MAX:
-		this->_rawTime = LLONG_MAX;
+		this->_rawTime = LONG_MAX;
 		break;
 	case TIME_DWORD:
 	default:

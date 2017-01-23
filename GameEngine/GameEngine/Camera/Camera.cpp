@@ -30,18 +30,18 @@ void Camera::update( Time currentTime )
 	updateProjection();
 }
 
-void Camera::setFrustumData( float fov, float aspect, float nearClipping, float farClipping )
+void Camera::setFrustumData( float inFov, float inAspect, float nearClipping, float farClipping )
 {
-	this->fov = fov;
-	this->aspect = aspect;
+	this->fov = inFov;
+	this->aspect = inAspect;
 	this->nearPlane = nearClipping;
 	this->farPlane = farClipping;
 	
-	this->nearHeight = 2.0f * nearPlane * tanf( fov * MATH_PI_180 / 2.0f );
-	this->farHeight = 2.0f * farPlane * tanf( fov * MATH_PI_180 / 2.0f );
+	this->nearHeight = 2.0f * nearPlane * tanf( inFov * MATH_PI_180 / 2.0f );
+	this->farHeight = 2.0f * farPlane * tanf( inFov * MATH_PI_180 / 2.0f );
 
-	this->nearWidth = aspect * nearHeight;
-	this->farWidth = aspect * farHeight;
+	this->nearWidth = inAspect * nearHeight;
+	this->farWidth = inAspect * farHeight;
 }
 
 void Camera::setViewPort( const int xPos, const int yPos, const int width, const int height )
@@ -53,15 +53,15 @@ void Camera::setViewPort( const int xPos, const int yPos, const int width, const
 	GraphicsEngine::setViewPort( xPos, yPos, width, height );
 }
 
-void Camera::setOrientation( const Vect& pos, const Vect& target, const Vect& up )
+void Camera::setOrientation( const Vect& inPos, const Vect& inTarget, const Vect& inUp )
 {
-	this->pos = pos;
-	this->target = target;
+	this->pos = inPos;
+	this->target = inTarget;
 
 	this->direction = this->pos - this->target;
 	this->direction.norm();
 
-	this->up = up;
+	this->up = inUp;
 	this->right = this->up.cross( this->direction );
 	this->right.norm();
 
