@@ -23,12 +23,12 @@ Model::~Model()
 {
 }
 
-ID3D11Buffer** Model::getVertexBuffer()
+ComPtr<ID3D12Resource> Model::getVertexBuffer()
 {
-	return &vertexBuffer;
+	return vertexBuffer;
 }
 
-ID3D11Buffer* Model::getIndexBuffer()
+ComPtr<ID3D12Resource> Model::getIndexBuffer()
 {
 	return indexBuffer;
 }

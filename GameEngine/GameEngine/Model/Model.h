@@ -1,7 +1,10 @@
 #ifndef MODEL_H
 #define MODEL_H
-#include <d3d11.h>
+#include <d3d12.h>
+#include <wrl/client.h>
 #include "Node.h"
+
+using Microsoft::WRL::ComPtr;
 
 enum Model_ID
 {
@@ -18,16 +21,18 @@ public:
 	Model( Model_ID id );
 	virtual ~Model();
 
-	ID3D11Buffer** getVertexBuffer();
-	ID3D11Buffer* getIndexBuffer();
+	ComPtr<ID3D12Resource> getVertexBuffer();
+	ComPtr<ID3D12Resource> getIndexBuffer();
 	unsigned int* getStride();
 	unsigned int* getOffset();
 	unsigned int getNumIndices();
 	unsigned int getNumVertices();
 
 protected:
-	ID3D11Buffer* vertexBuffer;
-	ID3D11Buffer* indexBuffer;
+	ComPtr<ID3D12Resource> vertexBuffer;
+	ComPtr<ID3D12Resource> indexBuffer;
+	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
+	D3D12_INDEX_BUFFER_VIEW indexBufferView;
 	unsigned int numVerts;
 	unsigned int numIndices;
 	unsigned int stride;

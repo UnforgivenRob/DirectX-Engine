@@ -134,12 +134,8 @@ void Engine::SwapBuffers()
 {
 }
 
-ID3D11Device* const Engine::getDevice() 
+ComPtr<ID3D12Device> const Engine::getDevice() 
 { 
 	return GraphicsEngine::getDevice(); 
 }
 
-ID3D11DeviceContext* const Engine::getContext() 
-{ 
-	return GraphicsEngine::getContext(); 
-}

@@ -41,8 +41,7 @@ private:
 	Timer intervalTimer;
 	Vect bgColor;
 	
-	ID3D11Device* Device;
-	ID3D11DeviceContext* Context;
+	ComPtr<ID3D12Device> Device;
 };
 #endif
 

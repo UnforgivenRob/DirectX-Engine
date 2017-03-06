@@ -4,46 +4,67 @@
 #include "FileSystem.h"
 #include "ConstantBuffers.h"
 #include "GraphicsEngine.h"
+#include <d3dcompiler.h>
 
 Shader::Shader( Shader_ID id, const char* inName, int cb_Size )
-	: id( id ), Device( GraphicsEngine::getDevice() ), Context( GraphicsEngine::getContext() )
+	: id( id ), Device( GraphicsEngine::getDevice() )
 {
+	cb_Size;
 	char buff[200];
+	ComPtr<ID3DBlob> vs;
+	ComPtr<ID3DBlob> ps;
 	
 	strcpy_s( buff, "Debug\\" );
 	strcat_s(buff, inName);
 	strcat_s(buff, ".vs.cso");
-	CompileVertexShader(buff); 
+	CompileVertexShader( buff, vs );
 
 	strcpy_s( buff, "Debug\\" );
 	strcat_s(buff, inName);
 	strcat_s(buff, ".ps.cso");
-	CompilePixelShader( buff );
+	CompilePixelShader( buff, ps );
 
-	D3D11_BUFFER_DESC cbDesc = {};
-	cbDesc.Usage = D3D11_USAGE_DEFAULT;
-	cbDesc.ByteWidth = cb_Size;
-	cbDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	cbDesc.CPUAccessFlags = 0;
+	VS.BytecodeLength = vs->GetBufferSize();
+	VS.pShaderBytecode = vs->GetBufferPointer();
 
-	baseBuffer b = {Matrix(IDENTITY), Matrix(IDENTITY), Matrix(IDENTITY)};
+	PS.BytecodeLength = ps->GetBufferSize();
+	PS.pShaderBytecode = ps->GetBufferPointer();
 
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = &b;
-	InitData.SysMemPitch = 0;
-	InitData.SysMemSlicePitch = 0;
+	layout = new D3D12_INPUT_ELEMENT_DESC[3];
 
-	HRESULT res = Device->CreateBuffer( &cbDesc, &InitData, &constBuff );
-	assert( res == S_OK );
+	layout[0] = { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+	layout[1] = { "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+	layout[2] = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
+
+	layoutCnt = 3;
 }
 
 Shader::~Shader(void)
 {
-	ReleaseCOM(vs);
-	ReleaseCOM(ps);
+	delete[] layout;
 }
 
-void Shader::CompileVertexShader( char* vsName )
+D3D12_SHADER_BYTECODE * Shader::getVS()
+{
+	return &VS;
+}
+
+D3D12_SHADER_BYTECODE * Shader::getPS()
+{
+	return &PS;
+}
+
+D3D12_INPUT_ELEMENT_DESC * Shader::getLayout()
+{
+	return layout;
+}
+
+unsigned int Shader::getLayoutCnt()
+{
+	return layoutCnt;
+}
+
+void Shader::CompileVertexShader( char* vsName, ComPtr<ID3DBlob> vs )
 {
 	FileHandle fh;
 	FileError err;
@@ -57,37 +78,20 @@ void Shader::CompileVertexShader( char* vsName )
 	err = File::tell( fh, sz );
 	assert( err == FILE_SUCCESS );
 
-	byte* vsByteCode = new byte[sz];
-
 	err = File::seek(fh, FILE_SEEK_BEGIN, 0 );
 	assert( err == FILE_SUCCESS );
 	
-	err = File::read( fh, vsByteCode, sz );
-	assert( err == FILE_SUCCESS );
-
-	HRESULT res = Device->CreateVertexShader( vsByteCode, sz, nullptr, &vs );
+	HRESULT res = D3DCreateBlob( sz, vs.GetAddressOf() );
 	assert( res == S_OK );
 
-	D3D11_INPUT_ELEMENT_DESC layout[] = 
-    { 
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
-		{ "UV", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
-		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D11_INPUT_PER_VERTEX_DATA, 0 }, 
-    }; 
-    UINT numElements = ARRAYSIZE( layout ); 
- 
-    // Create the input layout 
-	res = Device->CreateInputLayout( layout, numElements, vsByteCode, sz, &vertexLayout ); 
-	assert( res == S_OK );
-
-    // Set the input layout 
-    Context->IASetInputLayout( vertexLayout ); 
+	err = File::read(fh, (char*)vs->GetBufferPointer(), sz);
+	assert(err == FILE_SUCCESS);
 
 	err = File::close( fh );
 	assert( err == FILE_SUCCESS );
 }
 
-void Shader::CompilePixelShader( char* psName )
+void Shader::CompilePixelShader( char* psName, ComPtr<ID3DBlob> ps )
 {
 	FileHandle fh;
 	FileError err;
@@ -101,34 +105,32 @@ void Shader::CompilePixelShader( char* psName )
 	err = File::tell( fh, sz );
 	assert( err == FILE_SUCCESS );
 
-	byte* psByteCode = new byte[sz];
-
 	err = File::seek(fh, FILE_SEEK_BEGIN, 0 );
 	assert( err == FILE_SUCCESS );
 	
-	err = File::read( fh, psByteCode, sz );
-	assert( err == FILE_SUCCESS );
+	HRESULT res = D3DCreateBlob(sz, ps.GetAddressOf());
+	assert(res == S_OK);
 
-	HRESULT res = Device->CreatePixelShader( psByteCode, sz, nullptr, &ps );
-	assert( res == S_OK );
+	err = File::read(fh, (char*)ps->GetBufferPointer(), sz);
+	assert(err == FILE_SUCCESS);
 }
 
-ID3D11VertexShader* Shader::getVertexShader()
-{
-	return vs;
-}
-
-ID3D11PixelShader* Shader::getPixelShader()
-{
-	return ps;
-}
-
-ID3D11InputLayout* Shader::getVertexLayout()
-{
-	return vertexLayout;
-}
-
-ID3D11Buffer* Shader::getConstBuffer()
-{
-	return constBuff;
-}
+//ID3D11VertexShader* Shader::getVertexShader()
+//{
+//	return vs;
+//}
+//
+//ID3D11PixelShader* Shader::getPixelShader()
+//{
+//	return ps;
+//}
+//
+//ID3D11InputLayout* Shader::getVertexLayout()
+//{
+//	return vertexLayout;
+//}
+//
+//ID3D11Buffer* Shader::getConstBuffer()
+//{
+//	return constBuff;
+//}

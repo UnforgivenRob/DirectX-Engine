@@ -1,5 +1,6 @@
 #include "Cylinder.h"
 #include "GraphicsEngine.h"
+#include "d3dx12.h"
 #include "MathEngine.h"
 #include <math.h>
 
@@ -106,40 +107,77 @@ void Cylinder::initModel()
 	}
 	indices[237] = 22;
 
-	ID3D11Device* device = GraphicsEngine::getDevice();
+	ComPtr<ID3D12Device> device = GraphicsEngine::getDevice();
+	ComPtr<ID3D12GraphicsCommandList> commandList = GraphicsEngine::getCommandList();
 
-	D3D11_BUFFER_DESC vertexDesc;
-	vertexDesc.Usage           = D3D11_USAGE_IMMUTABLE;
-	vertexDesc.ByteWidth       = 42 * sizeof( vert );
-	vertexDesc.BindFlags       = D3D11_BIND_VERTEX_BUFFER;
-	vertexDesc.CPUAccessFlags  = 0;
-	vertexDesc.MiscFlags       = 0;
+	D3D12_HEAP_PROPERTIES heapProps;
+	heapProps.Type = D3D12_HEAP_TYPE_DEFAULT;
 
-	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = verts;
-	InitData.SysMemPitch = 0;
-	InitData.SysMemSlicePitch = 0;
+	{
+		D3D12_RESOURCE_DESC resourceDesc;
+		resourceDesc.Width = 42 * sizeof(vert);
 
-	HRESULT res = device->CreateBuffer( &vertexDesc, &InitData, &vertexBuffer );
-	assert( res == S_OK );
+		HRESULT res = device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_COPY_DEST, nullptr, IID_PPV_ARGS(&vertexBuffer));
+		assert(res == S_OK);
 
-	D3D11_BUFFER_DESC indexDesc;
-	indexDesc.Usage           = D3D11_USAGE_DEFAULT;
-	indexDesc.ByteWidth       = 80 * 3 * sizeof( unsigned int );
-	indexDesc.BindFlags       = D3D11_BIND_INDEX_BUFFER;
-	indexDesc.CPUAccessFlags  = 0;
-	indexDesc.MiscFlags       = 0;
+		D3D12_HEAP_PROPERTIES heapPropsUpLoad;
+		heapPropsUpLoad.Type = D3D12_HEAP_TYPE_UPLOAD;
 
-	D3D11_SUBRESOURCE_DATA indexData;
-	indexData.pSysMem = indices;
-	indexData.SysMemPitch = 0;
-	indexData.SysMemSlicePitch = 0;
+		ComPtr<ID3D12Resource> vertexBufferUploadHeap;
+		res = device->CreateCommittedResource(&heapPropsUpLoad, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexBufferUploadHeap));
+		assert(res == S_OK);
 
-	res = device->CreateBuffer( &indexDesc, &indexData, &indexBuffer );
-	assert( res == S_OK );
+		D3D12_SUBRESOURCE_DATA vertexData = {};
+		vertexData.pData = verts;
+		vertexData.RowPitch = 42 * sizeof(vert);
+		vertexData.SlicePitch = vertexData.RowPitch;
 
-	GraphicsEngine::getContext()->IASetVertexBuffers( 0, 1, &vertexBuffer, &stride, &offset ); 
-	GraphicsEngine::getContext()->IASetIndexBuffer( indexBuffer, DXGI_FORMAT_R32_UINT, 0 ); 
+		D3D12_RESOURCE_BARRIER transition;
+		transition.Transition.pResource = vertexBuffer.Get();
+		transition.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+		transition.Transition.StateAfter = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER;
+
+		UpdateSubresources<1>(commandList.Get(), vertexBuffer.Get(), vertexBufferUploadHeap.Get(), 0, 0, 1, &vertexData);
+		commandList->ResourceBarrier(1, &transition);
+
+		vertexBufferView.BufferLocation = vertexBuffer->GetGPUVirtualAddress();
+		vertexBufferView.StrideInBytes = sizeof(vert);
+		vertexBufferView.SizeInBytes = 42 * sizeof(vert);
+	}
+	//Index Buffer
+
+	{
+		D3D12_RESOURCE_DESC resourceDesc;
+		resourceDesc.Width = 80 * 3 * sizeof(unsigned int);
+
+		HRESULT res = device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_COPY_DEST, nullptr, IID_PPV_ARGS(&indexBuffer));
+		assert(res == S_OK);
+
+		D3D12_HEAP_PROPERTIES heapPropsUpLoad;
+		heapPropsUpLoad.Type = D3D12_HEAP_TYPE_UPLOAD;
+
+		ComPtr<ID3D12Resource> indexBufferUploadHeap;
+		res = device->CreateCommittedResource(&heapPropsUpLoad, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&indexBufferUploadHeap));
+		assert(res == S_OK);
+
+		D3D12_SUBRESOURCE_DATA indexData = {};
+		indexData.pData = verts;
+		indexData.RowPitch = 80 * 3 * sizeof(unsigned int);
+		indexData.SlicePitch = indexData.RowPitch;
+
+		D3D12_RESOURCE_BARRIER transition;
+		transition.Transition.pResource = indexBuffer.Get();
+		transition.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+		transition.Transition.StateAfter = D3D12_RESOURCE_STATE_INDEX_BUFFER;
+
+		UpdateSubresources<1>(commandList.Get(), indexBuffer.Get(), indexBufferUploadHeap.Get(), 0, 0, 1, &indexData);
+		commandList->ResourceBarrier(1, &transition);
+
+		indexBufferView.BufferLocation = indexBuffer->GetGPUVirtualAddress();
+		indexBufferView.Format = DXGI_FORMAT_R32_UINT;
+		indexBufferView.SizeInBytes = 80 * 3 * sizeof(unsigned int);
+	}
+
 	numVerts = 42;
 	numIndices = 80 * 3;
 }

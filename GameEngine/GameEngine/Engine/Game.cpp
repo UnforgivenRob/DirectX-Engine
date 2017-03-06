@@ -25,13 +25,12 @@ Game::Game( HINSTANCE hInstance )
 
 Game::~Game()
 {
-	File::close(fh);
+	//File::close(fh);
 }
 
 void Game::Initialize()
 {
 	Device = GraphicsEngine::getDevice();
-	Context = GraphicsEngine::getContext();
 
 	InputManager::Activate();
 	CameraManager::Activate();
@@ -106,13 +105,16 @@ void Game::Draw()
 	GameObjectManager::get( GameObject_ID::Cylinder )->draw( CameraManager::getActive()->getProjMat() );
 	GameObjectManager::get( GameObject_ID::Sphere )->draw( CameraManager::getActive()->getProjMat() );
 	GameObjectManager::get( GameObject_ID::Grid )->draw( CameraManager::getActive()->getProjMat() );
+
+	ID3D12CommandList* pCommandLists[] = { GraphicsEngine::getCommandList().Get() };
+	GraphicsEngine::getCommandQueue()->ExecuteCommandLists(_countof(pCommandLists), pCommandLists);
 }
 
 void Game::ClearBuffers()
 {
-	HRESULT res = GraphicsEngine::getSwapChain()->Present ( 0, 0 );
+	HRESULT res = GraphicsEngine::getSwapChain()->Present ( 1, 0 );
 	assert( res == S_OK );
-	GraphicsEngine::ClearBuffers( bgColor );
+	GraphicsEngine::BufferSwap( bgColor );
 }
 
 void Game::UnloadContent()

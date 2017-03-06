@@ -61,6 +61,12 @@
     <Filter Include="Importer">
       <UniqueIdentifier>{a181333c-a98c-4358-b651-80f270504046}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{ac05a804-c835-4d1c-8f81-80002aa2eb13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_D3DX12">
+      <UniqueIdentifier>{2ed0ffc5-6e2b-4220-b2f6-1a7e7cb28676}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Engine.cpp">
@@ -278,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="..\Time\Time.h">
       <Filter>_Time\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\D3DX12\d3dx12.h">
+      <Filter>_D3DX12</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
