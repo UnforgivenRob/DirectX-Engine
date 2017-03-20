@@ -23,6 +23,8 @@ public:
 
 	ComPtr<ID3D12Resource> getVertexBuffer();
 	ComPtr<ID3D12Resource> getIndexBuffer();
+	D3D12_VERTEX_BUFFER_VIEW* getVertexBufferView();
+	D3D12_INDEX_BUFFER_VIEW* getIndexBufferView();
 	unsigned int* getStride();
 	unsigned int* getOffset();
 	unsigned int getNumIndices();

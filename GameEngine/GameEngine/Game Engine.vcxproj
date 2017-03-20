@@ -56,7 +56,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>d3d11.lib;D3DCompiler.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>d3d12.lib;D3DCompiler.lib;dxgi.lib;dxguid.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -101,6 +101,7 @@
     <ClCompile Include="Model\ModelManager.cpp" />
     <ClCompile Include="Model\Primitive.cpp" />
     <ClCompile Include="Model\Cylinder.cpp" />
+    <ClCompile Include="RenderGroup\RenderGroup.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
     <ClCompile Include="Shader\ShaderManager.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -147,6 +148,7 @@
     <ClInclude Include="Model\Primitive.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="PackageHeaders.h" />
+    <ClInclude Include="RenderGroup\RenderGroup.h" />
     <ClInclude Include="Shader\ConstantBuffers.h" />
     <ClInclude Include="Shader\Shader.h" />
     <ClInclude Include="Shader\ShaderManager.h" />

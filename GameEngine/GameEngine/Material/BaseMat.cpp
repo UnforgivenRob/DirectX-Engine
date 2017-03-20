@@ -1,7 +1,7 @@
 #include "BaseMat.h"
 #include "GraphicsEngine.h"
 #include "Shader.h"
-
+#include "d3dx12.h"
 BaseMat::BaseMat( Material_ID id,  Shader* inShader )
 	: Material( id, inShader )
 {
@@ -34,13 +34,15 @@ BaseMat::BaseMat( Material_ID id,  Shader* inShader )
 	blendDesc.RenderTarget[0].LogicOp = D3D12_LOGIC_OP_NOOP;
 	blendDesc.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
+	rastDesc;
+	blendDesc;
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.InputLayout = { shader->getLayout(), shader->getLayoutCnt() };
 	psoDesc.pRootSignature = GraphicsEngine::getRootSignature().Get();
 	psoDesc.VS = *shader->getVS();
 	psoDesc.PS = *shader->getPS();
-	psoDesc.RasterizerState = rastDesc;
-	psoDesc.BlendState = blendDesc;
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT); //rastDesc;
+	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT); //blendDesc;
 	psoDesc.DepthStencilState.DepthEnable = FALSE;
 	psoDesc.DepthStencilState.StencilEnable = FALSE;
 	psoDesc.SampleMask = UINT_MAX;
