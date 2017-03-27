@@ -11,8 +11,7 @@ Shader::Shader( Shader_ID id, const char* inName, int cb_Size )
 {
 	cb_Size;
 	char buff[200];
-	ComPtr<ID3DBlob> vs;
-	ComPtr<ID3DBlob> ps;
+
 	
 	strcpy_s( buff, "Debug\\" );
 	strcat_s(buff, inName);
@@ -41,19 +40,19 @@ Shader::~Shader(void)
 	delete[] layout;
 }
 
-D3D12_SHADER_BYTECODE * Shader::getVS()
+D3D12_SHADER_BYTECODE& Shader::getVS()
 {
-	return &VS;
+	return VS;
 }
 
-D3D12_SHADER_BYTECODE * Shader::getPS()
+D3D12_SHADER_BYTECODE& Shader::getPS()
 {
-	return &PS;
+	return PS;
 }
 
 D3D12_INPUT_ELEMENT_DESC * Shader::getLayout()
 {
-	return layout;
+	return &layout[0];
 }
 
 unsigned int Shader::getLayoutCnt()
@@ -61,7 +60,7 @@ unsigned int Shader::getLayoutCnt()
 	return layoutCnt;
 }
 
-void Shader::CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& vs )
+void Shader::CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& Vs )
 {
 	FileHandle fh;
 	FileError err;
@@ -78,17 +77,17 @@ void Shader::CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& vs )
 	err = File::seek(fh, FILE_SEEK_BEGIN, 0 );
 	assert( err == FILE_SUCCESS );
 	
-	HRESULT res = D3DCreateBlob( sz, vs.GetAddressOf() );
+	HRESULT res = D3DCreateBlob( sz, Vs.GetAddressOf() );
 	assert( res == S_OK );
 
-	err = File::read(fh, (char*)vs->GetBufferPointer(), sz);
+	err = File::read(fh, (char*)Vs->GetBufferPointer(), sz);
 	assert(err == FILE_SUCCESS);
 
 	err = File::close( fh );
 	assert( err == FILE_SUCCESS );
 }
 
-void Shader::CompilePixelShader( char* psName, ComPtr<ID3DBlob>& ps )
+void Shader::CompilePixelShader( char* psName, ComPtr<ID3DBlob>& Ps )
 {
 	FileHandle fh;
 	FileError err;
@@ -105,9 +104,9 @@ void Shader::CompilePixelShader( char* psName, ComPtr<ID3DBlob>& ps )
 	err = File::seek(fh, FILE_SEEK_BEGIN, 0 );
 	assert( err == FILE_SUCCESS );
 	
-	HRESULT res = D3DCreateBlob(sz, ps.GetAddressOf());
+	HRESULT res = D3DCreateBlob(sz, Ps.GetAddressOf());
 	assert(res == S_OK);
 
-	err = File::read(fh, (char*)ps->GetBufferPointer(), sz);
+	err = File::read(fh, (char*)Ps->GetBufferPointer(), sz);
 	assert(err == FILE_SUCCESS);
 }

@@ -181,17 +181,87 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 	}
 
 	{
-		CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-		rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
+		// Describe and create a depth stencil view (DSV) descriptor heap.
+		D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
+		dsvHeapDesc.NumDescriptors = 1;
+		dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+		dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+		res = engine.Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&engine.dsvDescriptorHeap));
+	}
+
+	{
+		D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
+		depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
+		depthStencilDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+		depthStencilDesc.Flags = D3D12_DSV_FLAG_NONE;
+
+		D3D12_CLEAR_VALUE depthOptimizedClearValue = {};
+		depthOptimizedClearValue.Format = DXGI_FORMAT_D32_FLOAT;
+		depthOptimizedClearValue.DepthStencil.Depth = 1.0f;
+		depthOptimizedClearValue.DepthStencil.Stencil = 0;
+
+		D3D12_HEAP_PROPERTIES props = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+		D3D12_RESOURCE_DESC tex2D = CD3DX12_RESOURCE_DESC::Tex2D(DXGI_FORMAT_D32_FLOAT, engine.mClientWidth, engine.mClientHeight, 1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL);
+		res = engine.Device->CreateCommittedResource(
+			&props,
+			D3D12_HEAP_FLAG_NONE,
+			&tex2D,
+			D3D12_RESOURCE_STATE_DEPTH_WRITE,
+			&depthOptimizedClearValue,
+			IID_PPV_ARGS(&engine.depthStencil));
+
+
+		engine.Device->CreateDepthStencilView(engine.depthStencil.Get(), &depthStencilDesc, engine.dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+	}
+
+	{
+		D3D12_FEATURE_DATA_ROOT_SIGNATURE featureData = {};
+
+		// This is the highest version the sample supports. If CheckFeatureSupport succeeds, the HighestVersion returned will not be greater than this.
+		featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
+
+		res = engine.Device->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &featureData, sizeof(featureData));
+		if (res != S_OK)
+		{
+			featureData.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_0;
+		}
+
+
+		CD3DX12_DESCRIPTOR_RANGE1 ranges[1];
+		CD3DX12_ROOT_PARAMETER1 rootParameters[1];
+
+		ranges[0].Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0, 0, D3D12_DESCRIPTOR_RANGE_FLAG_DATA_STATIC);
+		rootParameters[0].InitAsDescriptorTable(1, &ranges[0], D3D12_SHADER_VISIBILITY_VERTEX);
+
+		// Allow input layout and deny uneccessary access to certain pipeline stages.
+		D3D12_ROOT_SIGNATURE_FLAGS rootSignatureFlags =
+			D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT |
+			D3D12_ROOT_SIGNATURE_FLAG_DENY_HULL_SHADER_ROOT_ACCESS |
+			D3D12_ROOT_SIGNATURE_FLAG_DENY_DOMAIN_SHADER_ROOT_ACCESS |
+			D3D12_ROOT_SIGNATURE_FLAG_DENY_GEOMETRY_SHADER_ROOT_ACCESS |
+			D3D12_ROOT_SIGNATURE_FLAG_DENY_PIXEL_SHADER_ROOT_ACCESS;
+
+		CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
+		rootSignatureDesc.Init_1_1(_countof(rootParameters), rootParameters, 0, nullptr, rootSignatureFlags);
 
 		ComPtr<ID3DBlob> signature;
 		ComPtr<ID3DBlob> error;
-		res = (D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
+		res = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, featureData.HighestVersion, &signature, &error);
 		assert(res == S_OK);
 		
 		res = engine.Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&engine.rootSignature));
 		assert(res == S_OK);
 	}
+
+	res = engine.Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, engine.commandAllocator[engine.frameIndex].Get(), nullptr, IID_PPV_ARGS(&engine.commandList));
+	assert(res == S_OK);
+
+	res = engine.commandList->Close();
+	assert(res == S_OK);
+
+	res = engine.Device->CreateFence(engine.fenceValues[engine.frameIndex], D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&engine.fence));
+	assert(res == S_OK);
+	engine.fenceValues[engine.frameIndex]++;
 
 	//OnResize();
 }
@@ -367,6 +437,11 @@ UINT GraphicsEngine::getCurrentFrameIndex()
 ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getRTVHeap()
 {
 	return engine.rtvDescriptorHeap;
+}
+
+ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getDSVHeap()
+{
+	return engine.dsvDescriptorHeap;
 }
 
 UINT GraphicsEngine::getRTVHeapSize()

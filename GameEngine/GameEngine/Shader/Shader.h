@@ -18,8 +18,8 @@ public:
 	Shader( Shader_ID id, const char* inName, int cb_Size );
 	~Shader();
 
-	D3D12_SHADER_BYTECODE* getVS();
-	D3D12_SHADER_BYTECODE* getPS();
+	D3D12_SHADER_BYTECODE& getVS();
+	D3D12_SHADER_BYTECODE& getPS();
 	D3D12_INPUT_ELEMENT_DESC* getLayout();
 	unsigned int getLayoutCnt();
 
@@ -34,8 +34,8 @@ private:
 	Shader& operator= ( const Shader& );
 	Shader( const Shader& );
 
-	void CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& VS );
-	void CompilePixelShader( char* psName, ComPtr<ID3DBlob>& PS );
+	void CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& Vs );
+	void CompilePixelShader( char* psName, ComPtr<ID3DBlob>& Ps );
 
 	Shader_ID id;
 
@@ -54,6 +54,9 @@ private:
 	//ID3D11Device* const Device;
 	//ID3D11DeviceContext* const Context;
 	ComPtr<ID3D12Device> Device;
+
+	ComPtr<ID3DBlob> vs;
+	ComPtr<ID3DBlob> ps;
 };
 
 #endif

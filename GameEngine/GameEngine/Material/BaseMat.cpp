@@ -36,19 +36,26 @@ BaseMat::BaseMat( Material_ID id,  Shader* inShader )
 
 	rastDesc;
 	blendDesc;
+
+	D3D12_INPUT_ELEMENT_DESC layout[] = {
+		{ "POSITION",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "UV",			0, DXGI_FORMAT_R32G32_FLOAT,	0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "NORMAL",		0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+	};
+
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-	psoDesc.InputLayout = { shader->getLayout(), shader->getLayoutCnt() };
+	psoDesc.InputLayout = { layout, shader->getLayoutCnt() };
 	psoDesc.pRootSignature = GraphicsEngine::getRootSignature().Get();
-	psoDesc.VS = *shader->getVS();
-	psoDesc.PS = *shader->getPS();
-	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT); //rastDesc;
+	psoDesc.VS = shader->getVS();
+	psoDesc.PS = shader->getPS();
+	psoDesc.RasterizerState = rastDesc; // CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT); //rastDesc;
 	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT); //blendDesc;
-	psoDesc.DepthStencilState.DepthEnable = FALSE;
-	psoDesc.DepthStencilState.StencilEnable = FALSE;
+	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
 	psoDesc.SampleMask = UINT_MAX;
 	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 	psoDesc.NumRenderTargets = 1;
 	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	psoDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 	psoDesc.SampleDesc.Count = 1;
 
 	HRESULT res = device->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&pipelineState));

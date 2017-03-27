@@ -13,6 +13,7 @@
 #include "InputManager.h"
 #include "ConstantBuffers.h"
 #include <dos.h>
+#include "d3dx12.h"
 
 Game::Game( HINSTANCE hInstance )
 	: Engine( hInstance )
@@ -101,12 +102,42 @@ void Game::Update()
 void Game::Draw()
 {
 	//Matrix id = Matrix( IDENTITY );
+
+	ID3D12GraphicsCommandList* commandList = GraphicsEngine::getCommandList().Get();
+	ComPtr<ID3D12CommandAllocator> commandAllocator = GraphicsEngine::getCurrentCommandAllocator();
+
+	HRESULT res = commandAllocator->Reset();
+	assert(res == S_OK);
+
+	res = commandList->Reset(commandAllocator.Get(), MaterialManager::get(Material_ID::Base_Solid)->getPSO().Get());
+	assert(res == S_OK);
+
+	commandList->SetGraphicsRootSignature(GraphicsEngine::getRootSignature().Get());
+	commandList->RSSetViewports(1, GraphicsEngine::getViewport());
+	commandList->RSSetScissorRects(1, GraphicsEngine::getScissorRect());
+
+	CD3DX12_RESOURCE_BARRIER trans = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsEngine::getCurrentRenderTarget().Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	commandList->ResourceBarrier(1, &trans);
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(GraphicsEngine::getRTVHeap()->GetCPUDescriptorHandleForHeapStart(), GraphicsEngine::getCurrentFrameIndex(), GraphicsEngine::getRTVHeapSize());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle(GraphicsEngine::getDSVHeap()->GetCPUDescriptorHandleForHeapStart());
+	commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, &dsvHandle);
+
+	commandList->ClearRenderTargetView(rtvHandle, (float*)&bgColor, 0, nullptr);
+	commandList->ClearDepthStencilView(GraphicsEngine::getDSVHeap()->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+
 	GameObjectManager::get( GameObject_ID::Cube )->draw( CameraManager::getActive()->getProjMat() );
 	GameObjectManager::get( GameObject_ID::Cylinder )->draw( CameraManager::getActive()->getProjMat() );
 	GameObjectManager::get( GameObject_ID::Sphere )->draw( CameraManager::getActive()->getProjMat() );
 	GameObjectManager::get( GameObject_ID::Grid )->draw( CameraManager::getActive()->getProjMat() );
 
-	ID3D12CommandList* pCommandLists[] = { GraphicsEngine::getCommandList().Get() };
+	trans = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsEngine::getCurrentRenderTarget().Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	commandList->ResourceBarrier(1, &trans);
+
+	res = commandList->Close();
+	assert(res == S_OK);
+
+	ID3D12CommandList* pCommandLists[] = { commandList };
 	GraphicsEngine::getCommandQueue()->ExecuteCommandLists(_countof(pCommandLists), pCommandLists);
 }
 

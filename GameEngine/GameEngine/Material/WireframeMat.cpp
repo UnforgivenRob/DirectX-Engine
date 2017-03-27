@@ -37,8 +37,8 @@ WireframeMat::WireframeMat( Material_ID id,  Shader* inShader )
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
 	psoDesc.InputLayout = { shader->getLayout(), shader->getLayoutCnt() };
 	psoDesc.pRootSignature = GraphicsEngine::getRootSignature().Get();
-	psoDesc.VS = *shader->getVS();
-	psoDesc.PS = *shader->getPS();
+	psoDesc.VS = shader->getVS();
+	psoDesc.PS = shader->getPS();
 	psoDesc.RasterizerState = rastDesc;
 	psoDesc.BlendState = blendDesc;
 	psoDesc.DepthStencilState.DepthEnable = FALSE;
