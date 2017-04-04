@@ -19,13 +19,35 @@ void GraphicsObject_Base::draw( Matrix& proj_Mat )
 	Shader* shade = material->activate();
 	shade;
 	ComPtr<ID3D12GraphicsCommandList> commandList = GraphicsEngine::getCommandList();
-	
-	commandList->SetPipelineState(material->getPSO().Get());
+	ComPtr<ID3D12CommandAllocator> commandAllocator = GraphicsEngine::getCurrentCommandAllocator();
+
+	HRESULT res = commandAllocator->Reset();
+	assert(res == S_OK);
+
+	res = commandList->Reset(commandAllocator.Get(), material->getPSO().Get());
+	assert(res == S_OK);
+
+	commandList->SetGraphicsRootSignature(GraphicsEngine::getRootSignature().Get());
+	commandList->RSSetViewports(1, GraphicsEngine::getViewport());
+	commandList->RSSetScissorRects(1, GraphicsEngine::getScissorRect());
+
+	CD3DX12_RESOURCE_BARRIER trans = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsEngine::getCurrentRenderTarget().Get(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	commandList->ResourceBarrier(1, &trans);
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(GraphicsEngine::getRTVHeap()->GetCPUDescriptorHandleForHeapStart(), GraphicsEngine::getCurrentFrameIndex(), GraphicsEngine::getRTVHeapSize());
+	commandList->OMSetRenderTargets(1, &rtvHandle, FALSE, nullptr);
 
 	commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	commandList->IASetIndexBuffer(model->getIndexBufferView());
 	commandList->IASetVertexBuffers(0, 1, model->getVertexBufferView());
 	commandList->DrawIndexedInstanced(model->getNumIndices(), 1, 0, 0, 0);
+
+	trans = CD3DX12_RESOURCE_BARRIER::Transition(GraphicsEngine::getCurrentRenderTarget().Get(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	commandList->ResourceBarrier(1, &trans);
+
+	res = commandList->Close();
+	assert(res == S_OK);
 
 /*	Shader* shade = material->activate();
 	ID3D11DeviceContext* Context = GraphicsEngine::getContext();

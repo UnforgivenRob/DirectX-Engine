@@ -28,7 +28,6 @@ public:
 	static D3D12_RECT* getScissorRect();
 	static UINT getCurrentFrameIndex();
 	static ComPtr<ID3D12DescriptorHeap> getRTVHeap();
-	static ComPtr<ID3D12DescriptorHeap> getDSVHeap();
 	static UINT getRTVHeapSize();
 
 private:

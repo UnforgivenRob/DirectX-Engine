@@ -110,14 +110,18 @@ void GridModel::initModel()
 	ComPtr<ID3D12Device> device = GraphicsEngine::getDevice();
 	ComPtr<ID3D12GraphicsCommandList> commandList = GraphicsEngine::getCommandList();
 
-	D3D12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3D12_HEAP_PROPERTIES heapProps;
+	heapProps.Type = D3D12_HEAP_TYPE_DEFAULT;
+
 	{
-		D3D12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(numVerts * sizeof(vert));
+		D3D12_RESOURCE_DESC resourceDesc;
+		resourceDesc.Width = numVerts * sizeof(vert);
 
 		HRESULT res = device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_COPY_DEST, nullptr, IID_PPV_ARGS(&vertexBuffer));
 		assert(res == S_OK);
 
-		D3D12_HEAP_PROPERTIES heapPropsUpLoad = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+		D3D12_HEAP_PROPERTIES heapPropsUpLoad;
+		heapPropsUpLoad.Type = D3D12_HEAP_TYPE_UPLOAD;
 
 		ComPtr<ID3D12Resource> vertexBufferUploadHeap;
 		res = device->CreateCommittedResource(&heapPropsUpLoad, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&vertexBufferUploadHeap));
@@ -128,7 +132,10 @@ void GridModel::initModel()
 		vertexData.RowPitch = numVerts * sizeof(vert);
 		vertexData.SlicePitch = vertexData.RowPitch;
 
-		D3D12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(vertexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER);
+		D3D12_RESOURCE_BARRIER transition;
+		transition.Transition.pResource = vertexBuffer.Get();
+		transition.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+		transition.Transition.StateAfter = D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER;
 
 		UpdateSubresources<1>(commandList.Get(), vertexBuffer.Get(), vertexBufferUploadHeap.Get(), 0, 0, 1, &vertexData);
 		commandList->ResourceBarrier(1, &transition);
@@ -140,12 +147,14 @@ void GridModel::initModel()
 	//Index Buffer
 
 	{
-		D3D12_RESOURCE_DESC resourceDesc = CD3DX12_RESOURCE_DESC::Buffer(numIndices * sizeof(unsigned int));
+		D3D12_RESOURCE_DESC resourceDesc;
+		resourceDesc.Width = numIndices * sizeof(unsigned int);
 
 		HRESULT res = device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_COPY_DEST, nullptr, IID_PPV_ARGS(&indexBuffer));
 		assert(res == S_OK);
 
-		D3D12_HEAP_PROPERTIES heapPropsUpLoad = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+		D3D12_HEAP_PROPERTIES heapPropsUpLoad;
+		heapPropsUpLoad.Type = D3D12_HEAP_TYPE_UPLOAD;
 
 		ComPtr<ID3D12Resource> indexBufferUploadHeap;
 		res = device->CreateCommittedResource(&heapPropsUpLoad, D3D12_HEAP_FLAG_NONE, &resourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&indexBufferUploadHeap));
@@ -156,7 +165,10 @@ void GridModel::initModel()
 		indexData.RowPitch = numIndices * sizeof(unsigned int);
 		indexData.SlicePitch = indexData.RowPitch;
 
-		D3D12_RESOURCE_BARRIER transition = CD3DX12_RESOURCE_BARRIER::Transition(indexBuffer.Get(), D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_INDEX_BUFFER);
+		D3D12_RESOURCE_BARRIER transition;
+		transition.Transition.pResource = indexBuffer.Get();
+		transition.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+		transition.Transition.StateAfter = D3D12_RESOURCE_STATE_INDEX_BUFFER;
 
 		UpdateSubresources<1>(commandList.Get(), indexBuffer.Get(), indexBufferUploadHeap.Get(), 0, 0, 1, &indexData);
 		commandList->ResourceBarrier(1, &transition);
