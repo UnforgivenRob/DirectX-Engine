@@ -33,32 +33,6 @@ Shader::Shader( Shader_ID id, const char* inName, int cb_Size )
 	layout[2] = { "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 20, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 };
 
 	layoutCnt = 3;
-
-	{
-		CD3DX12_HEAP_PROPERTIES props = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-		CD3DX12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Buffer(1024 * 64);
-		HRESULT res = GraphicsEngine::getDevice()->CreateCommittedResource(
-			&props,
-			D3D12_HEAP_FLAG_NONE,
-			&desc,
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&constantBuffer));
-
-		// Describe and create a constant buffer view.
-		D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
-		cbvDesc.BufferLocation = constantBuffer->GetGPUVirtualAddress();
-		cbvDesc.SizeInBytes = (sizeof(BaseBuffer) + 255) & ~255;	// CB size is required to be 256-byte aligned.
-		GraphicsEngine::getDevice()->CreateConstantBufferView(&cbvDesc, GraphicsEngine::getCBVHeap()->GetCPUDescriptorHandleForHeapStart());
-
-		// Map and initialize the constant buffer. We don't unmap this until the
-		// app closes. Keeping things mapped for the lifetime of the resource is okay.
-		CD3DX12_RANGE readRange(0, 0);		// We do not intend to read from this resource on the CPU.
-		res = constantBuffer->Map(0, &readRange, reinterpret_cast<void**>(&cbvStart));
-		assert(res == S_OK);
-		memcpy(cbvStart, &buffer, sizeof(buffer));
-	}
-
 }
 
 Shader::~Shader(void)
@@ -84,16 +58,6 @@ D3D12_INPUT_ELEMENT_DESC * Shader::getLayout()
 unsigned int Shader::getLayoutCnt()
 {
 	return layoutCnt;
-}
-
-UINT8* Shader::getCBStart()
-{
-	return cbvStart;
-}
-
-BaseBuffer * Shader::getBuffer()
-{
-	return &buffer;
 }
 
 void Shader::CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& Vs )

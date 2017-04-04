@@ -29,7 +29,6 @@ public:
 	static UINT getCurrentFrameIndex();
 	static ComPtr<ID3D12DescriptorHeap> getRTVHeap();
 	static ComPtr<ID3D12DescriptorHeap> getDSVHeap();
-	static ComPtr<ID3D12DescriptorHeap> getCBVHeap();
 	static UINT getRTVHeapSize();
 
 private:
@@ -55,7 +54,6 @@ private:
 	ComPtr<ID3D12RootSignature> rootSignature;
 	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap;
 	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> cbvDescriptorHeap;
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12GraphicsCommandList> commandList;
 	UINT descriptorSize;

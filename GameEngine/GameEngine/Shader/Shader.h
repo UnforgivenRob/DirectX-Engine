@@ -3,7 +3,6 @@
 #include <d3d12.h>
 #include <wrl/client.h>
 #include "Node.h"
-#include "ConstantBuffers.h"
 
 using Microsoft::WRL::ComPtr;
 
@@ -24,25 +23,11 @@ public:
 	D3D12_INPUT_ELEMENT_DESC* getLayout();
 	unsigned int getLayoutCnt();
 
-	UINT8* getCBStart();
-	BaseBuffer* getBuffer();
-
 	//ID3D11VertexShader* getVertexShader();
 	//ID3D11PixelShader* getPixelShader();
 	//ID3D11InputLayout* getVertexLayout();
 
 	//ID3D11Buffer* getConstBuffer();
-
-	//overload operator new and delete to ensure aligned 16
-	void* operator new(size_t i)
-	{
-		return _mm_malloc(i, 16);
-	}
-
-	void operator delete(void* p)
-	{
-		return _mm_free(p);
-	}
 
 private:
 	Shader(void);
@@ -59,10 +44,6 @@ private:
 
 	D3D12_INPUT_ELEMENT_DESC* layout;
 	unsigned int layoutCnt;
-
-	ComPtr<ID3D12Resource> constantBuffer;
-	UINT8* cbvStart;
-	BaseBuffer buffer;
 	//ComPtr<ID3D12PipelineState> pipelineState;
 
 	//ID3D11VertexShader* vs;
