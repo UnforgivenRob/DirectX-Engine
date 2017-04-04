@@ -33,16 +33,6 @@ ComPtr<ID3D12Resource> Model::getIndexBuffer()
 	return indexBuffer;
 }
 
-D3D12_VERTEX_BUFFER_VIEW * Model::getVertexBufferView()
-{
-	return &vertexBufferView;
-}
-
-D3D12_INDEX_BUFFER_VIEW * Model::getIndexBufferView()
-{
-	return &indexBufferView;
-}
-
 unsigned int* Model::getStride()
 {
 	return &stride;

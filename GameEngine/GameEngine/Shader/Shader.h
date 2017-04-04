@@ -34,8 +34,8 @@ private:
 	Shader& operator= ( const Shader& );
 	Shader( const Shader& );
 
-	void CompileVertexShader( char* vsName, ComPtr<ID3DBlob>& VS );
-	void CompilePixelShader( char* psName, ComPtr<ID3DBlob>& PS );
+	void CompileVertexShader( char* vsName, ComPtr<ID3DBlob> VS );
+	void CompilePixelShader( char* psName, ComPtr<ID3DBlob> PS );
 
 	Shader_ID id;
 

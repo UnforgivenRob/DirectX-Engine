@@ -1,7 +1,6 @@
 #include "GraphicsEngine.h"
 #include <assert.h>
 #include "d3d12.h"
-#include "d3dx12.h"
 
 GraphicsEngine GraphicsEngine::engine = GraphicsEngine();
 
@@ -40,7 +39,6 @@ void GetHardwareAdapter(IDXGIFactory4 * pFactory, IDXGIAdapter1 ** ppAdapter)
 
 void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable4xMsaa, int clientWidth, int clientHeight )
 {
-	bEnable4xMsaa;
 	engine.mClientWidth = clientWidth;
 	engine.mClientHeight = clientHeight;
 
@@ -50,7 +48,7 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 	int width  = R.right - R.left;
 	int height = R.bottom - R.top;
 
-	engine.mMainWnd = CreateWindow( "D3DWndClassName", caption, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mApp, &engine ); 
+	engine.mMainWnd = CreateWindow( "D3DWndClassName", caption, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, width, height, 0, 0, mApp, 0 ); 
 	if( !engine.mMainWnd )
 	{
 		MessageBox(0, "CreateWindow Failed.", 0, 0);
@@ -59,7 +57,7 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 	ShowWindow(engine.mMainWnd, SW_SHOW);
 	UpdateWindow(engine.mMainWnd);
 
-//	UINT createDeviceFlags = 0;
+	UINT createDeviceFlags = 0;
 
 #if defined(_DEBUG) || defined(DEBUG)
 	{
@@ -131,26 +129,28 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 	engine.msaaQuality = msQualityLevels.NumQualityLevels;
 	assert( engine.msaaQuality > 0 );
 
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
+	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
 	swapChainDesc.BufferCount = FrameCount;
-	swapChainDesc.Width = engine.mClientWidth;
-	swapChainDesc.Height = engine.mClientHeight;
-	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferDesc.Width = engine.mClientWidth;
+	swapChainDesc.BufferDesc.Height = engine.mClientHeight;
+	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	swapChainDesc.OutputWindow = engine.mMainWnd;
 	swapChainDesc.SampleDesc.Count = 1;
+	swapChainDesc.Windowed = true;
 	
-	ComPtr<IDXGISwapChain1> swapChain;
+	ComPtr<IDXGISwapChain> swapChain;
 
-	res = factory->CreateSwapChainForHwnd(engine.commandQueue.Get(), engine.mMainWnd, &swapChainDesc, nullptr, nullptr, &swapChain);
-	assert(res == S_OK);
-
-	res = factory->MakeWindowAssociation(engine.mMainWnd, DXGI_MWA_NO_ALT_ENTER);
+	res = factory->CreateSwapChain(engine.commandQueue.Get(), &swapChainDesc, &swapChain);
 	assert(res == S_OK);
 
 	res = swapChain.As(&engine.swapChain);
 	assert(res == S_OK);
 	
+	res = factory->MakeWindowAssociation(engine.mMainWnd, DXGI_MWA_NO_ALT_ENTER);
+	assert(res == S_OK);
+
 	engine.frameIndex = engine.swapChain->GetCurrentBackBufferIndex();
 
 	{
@@ -171,7 +171,7 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 		for (UINT i = 0; i < FrameCount; i++)
 		{
 			res = engine.swapChain->GetBuffer(i, IID_PPV_ARGS(&engine.renderTargets[i]));
-			assert(res == S_OK);
+			assert(res = S_OK);
 			engine.Device->CreateRenderTargetView(engine.renderTargets[i].Get(), nullptr, rtvHandle);
 			rtvHandle.ptr += engine.descriptorSize;
 
@@ -180,20 +180,7 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 		}
 	}
 
-	{
-		CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
-		rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
-
-		ComPtr<ID3DBlob> signature;
-		ComPtr<ID3DBlob> error;
-		res = (D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
-		assert(res == S_OK);
-		
-		res = engine.Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&engine.rootSignature));
-		assert(res == S_OK);
-	}
-
-	//OnResize();
+	OnResize();
 }
 
 void GraphicsEngine::Deactivate()
@@ -229,7 +216,7 @@ void GraphicsEngine::OnResize()
 		for (UINT i = 0; i < FrameCount; i++)
 		{
 			res = engine.swapChain->GetBuffer(i, IID_PPV_ARGS(&engine.renderTargets[i]));
-			assert(res == S_OK);
+			assert(res = S_OK);
 			engine.Device->CreateRenderTargetView(engine.renderTargets[i].Get(), nullptr, rtvHandle);
 			rtvHandle.ptr += engine.descriptorSize;
 		}
@@ -296,7 +283,6 @@ void GraphicsEngine::setViewPort( const int posX, const int posY, const int widt
 
 void GraphicsEngine::BufferSwap( Vect& bgColor )
 {
-	bgColor;
 	const UINT64 currentFenceValue = engine.fenceValues[engine.frameIndex];
 
 	HRESULT res = engine.commandQueue->Signal(engine.fence.Get(), currentFenceValue);
@@ -304,7 +290,7 @@ void GraphicsEngine::BufferSwap( Vect& bgColor )
 
 	engine.frameIndex = engine.swapChain->GetCurrentBackBufferIndex();
 
-	if (engine.fence->GetCompletedValue() < engine.fenceValues[engine.frameIndex])
+	if (engine.fence->GetCompletedValue < engine.fenceValues[engine.frameIndex])
 	{
 		res = engine.fence->SetEventOnCompletion(engine.fenceValues[engine.frameIndex], engine.fenceEvent);
 		assert(res == S_OK);
@@ -337,39 +323,4 @@ ComPtr<ID3D12GraphicsCommandList> GraphicsEngine::getCommandList()
 ComPtr<ID3D12CommandQueue> GraphicsEngine::getCommandQueue()
 {
 	return engine.commandQueue;
-}
-
-ComPtr<ID3D12CommandAllocator> GraphicsEngine::getCurrentCommandAllocator()
-{
-	return engine.commandAllocator[engine.frameIndex];
-}
-
-ComPtr<ID3D12Resource> GraphicsEngine::getCurrentRenderTarget()
-{
-	return engine.renderTargets[engine.frameIndex];
-}
-
-D3D12_VIEWPORT * GraphicsEngine::getViewport()
-{
-	return &engine.Viewport;
-}
-
-D3D12_RECT * GraphicsEngine::getScissorRect()
-{
-	return &engine.scissorRect;
-}
-
-UINT GraphicsEngine::getCurrentFrameIndex()
-{
-	return engine.frameIndex;
-}
-
-ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getRTVHeap()
-{
-	return engine.rtvDescriptorHeap;
-}
-
-UINT GraphicsEngine::getRTVHeapSize()
-{
-	return engine.descriptorSize;
 }

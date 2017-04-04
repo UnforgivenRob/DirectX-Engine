@@ -5,7 +5,7 @@
 #include "Material.h"
 #include "MathEngine.h"
 
-class GraphicsObject : public Node
+class GraphicsObject
 {
 public:
 	GraphicsObject( Model_ID modelID, Material_ID material );
@@ -17,7 +17,6 @@ public:
 	void setModel( Model_ID modID );
 	Material* getMaterial();
 	Matrix& getModelView();
-	unsigned int getID();
 
 private:
 	GraphicsObject();

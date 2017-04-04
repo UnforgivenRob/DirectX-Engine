@@ -41,8 +41,3 @@ Matrix& GraphicsObject::getModelView()
 {
 	return this->model_Mat;
 }
-
-unsigned int GraphicsObject::getID()
-{
-	return id;
-}

@@ -22,13 +22,6 @@ public:
 	static ComPtr<ID3D12RootSignature> getRootSignature();
 	static ComPtr<ID3D12GraphicsCommandList> getCommandList();
 	static ComPtr<ID3D12CommandQueue> getCommandQueue();
-	static ComPtr<ID3D12CommandAllocator> getCurrentCommandAllocator();
-	static ComPtr<ID3D12Resource> getCurrentRenderTarget();
-	static D3D12_VIEWPORT* getViewport();
-	static D3D12_RECT* getScissorRect();
-	static UINT getCurrentFrameIndex();
-	static ComPtr<ID3D12DescriptorHeap> getRTVHeap();
-	static UINT getRTVHeapSize();
 
 private:
 	GraphicsEngine();

@@ -14,11 +14,5 @@ Material::~Material(void)
 
 Shader* Material::activate()
 {
-	
 	return shader;
-}
-
-ComPtr<ID3D12PipelineState> Material::getPSO()
-{
-	return pipelineState;
 }

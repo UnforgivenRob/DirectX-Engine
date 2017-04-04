@@ -25,8 +25,6 @@ public:
 
 	virtual Shader* activate();
 
-	ComPtr<ID3D12PipelineState> getPSO();
-
 protected:
 	ComPtr<ID3D12PipelineState> pipelineState;
 	ComPtr<ID3D12Device> device;
