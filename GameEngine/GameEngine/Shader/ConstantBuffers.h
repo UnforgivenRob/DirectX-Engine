@@ -2,7 +2,7 @@
 #define CONSTANTBUFFERS_H
 #include "MathEngine.h"
 
-struct baseBuffer
+struct BaseBuffer
 {
 	Matrix model;
 	Matrix view;

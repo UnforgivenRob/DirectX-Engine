@@ -181,6 +181,15 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 	}
 
 	{
+		D3D12_DESCRIPTOR_HEAP_DESC cbvHeapDesc = {};
+		cbvHeapDesc.NumDescriptors = 1;
+		cbvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+		cbvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+		res = engine.Device->CreateDescriptorHeap(&cbvHeapDesc, IID_PPV_ARGS(&engine.cbvDescriptorHeap));
+		assert(res == S_OK);
+	}
+
+	{
 		// Describe and create a depth stencil view (DSV) descriptor heap.
 		D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
 		dsvHeapDesc.NumDescriptors = 1;
@@ -442,6 +451,11 @@ ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getRTVHeap()
 ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getDSVHeap()
 {
 	return engine.dsvDescriptorHeap;
+}
+
+ComPtr<ID3D12DescriptorHeap> GraphicsEngine::getCBVHeap()
+{
+	return engine.cbvDescriptorHeap;
 }
 
 UINT GraphicsEngine::getRTVHeapSize()

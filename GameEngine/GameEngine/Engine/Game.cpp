@@ -43,11 +43,20 @@ void Game::Initialize()
 
 void Game::LoadContent()
 {
+	ID3D12GraphicsCommandList* commandList = GraphicsEngine::getCommandList().Get();
+	ComPtr<ID3D12CommandAllocator> commandAllocator = GraphicsEngine::getCurrentCommandAllocator();
+
+	HRESULT res = commandAllocator->Reset();
+	assert(res == S_OK);
+
+	res = commandList->Reset(commandAllocator.Get(), NULL);
+	assert(res == S_OK);
+
 	CameraManager::create( Camera1, Vect( 0.0f, 50.0f, 100.0f ), Vect ( 0.0f, 10.0f, 0.0f ), Vect( 0.0f, 1.0f, 0.0f ) );
 	CameraManager::get( Camera1 )->setFrustumData( 50.0f, 800.0f/600.0f, 0.1f, 10000.0f );
 	CameraManager::setActive( Camera1 );
 
-	ShaderManager::create( Shader_ID::Base, "Base", sizeof( baseBuffer ), false );
+	ShaderManager::create( Shader_ID::Base, "Base", sizeof( BaseBuffer ), false );
 	ShaderManager::create( Shader_ID::Solid, "Solid", sizeof( solidBuffer ), false );
 
 	MaterialManager::createBaseMat( Material_ID::Base_Solid, ShaderManager::get( Shader_ID::Base ) );
@@ -79,6 +88,12 @@ void Game::LoadContent()
 	GameObjectManager::get( GameObject_ID::Grid )->setStaticRot( Matrix( ROT_XYZ, 90.0f * MATH_PI_180, 90.0f * MATH_PI_180, 0.0f * MATH_PI_180 ) );
 	GameObjectManager::get( GameObject_ID::Grid )->setStaticScale( Matrix( SCALE, 10.0f, 10.0f, 10.0f ) );
 	GameObjectManager::get( GameObject_ID::Grid )->setStaticTrans( Matrix( TRANS, .5f, .5f, .5f ) );
+
+	res = commandList->Close();
+	assert(res == S_OK);
+
+	ID3D12CommandList* pCommandLists[] = { commandList };
+	GraphicsEngine::getCommandQueue()->ExecuteCommandLists(_countof(pCommandLists), pCommandLists);
 }
 
 void Game::Update()
