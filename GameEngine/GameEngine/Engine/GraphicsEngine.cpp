@@ -1,40 +1,16 @@
 #include "GraphicsEngine.h"
 #include <assert.h>
-#include "d3d12.h"
 
 GraphicsEngine GraphicsEngine::engine = GraphicsEngine();
 
 GraphicsEngine::GraphicsEngine()
-	: msaaQuality(0), Device(0), swapChain(0), depthStencil(0)
+	: msaaQuality(0), Device(0), Context(0), SwapChain(0), DepthStencil(0), RenderTargetView(0), DepthStencilView(0)
 {
-	ZeroMemory( &engine.Viewport, sizeof( D3D12_VIEWPORT ) );
+	ZeroMemory( &engine.Viewport, sizeof( D3D11_VIEWPORT ) );
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
-}
-
-void GetHardwareAdapter(IDXGIFactory4 * pFactory, IDXGIAdapter1 ** ppAdapter)
-{
-	*ppAdapter = nullptr;
-	for (UINT adpterIndex = 0; ; ++adpterIndex)
-	{
-		IDXGIAdapter1* pAdapter = nullptr;
-
-		if (DXGI_ERROR_NOT_FOUND == pFactory->EnumAdapters1(adpterIndex, &pAdapter))
-		{
-			break; // no more adapters to enumerate
-		}
-
-		//check to see if adapter support D3D 12, dont create actual device
-		if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, _uuidof(ID3D12Device), nullptr)))
-		{
-			*ppAdapter = pAdapter;
-			return;
-		}
-
-		pAdapter->Release();
-	}
 }
 
 void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable4xMsaa, int clientWidth, int clientHeight )
@@ -59,209 +35,144 @@ void GraphicsEngine::Activate( HINSTANCE mApp, const char* caption, bool bEnable
 
 	UINT createDeviceFlags = 0;
 
-#if defined(_DEBUG) || defined(DEBUG)
-	{
-		ComPtr<ID3D12Debug> debugController;
-		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
-		{
-			debugController->EnableDebugLayer();
-		}
-	}
+#if defined(DEBUG) || defined(_DEBUG)
+	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
-
-	ComPtr<IDXGIFactory4> factory;
-	HRESULT res = CreateDXGIFactory1(IID_PPV_ARGS(&factory));
-
-	if (FAILED(res))
-	{
-		MessageBox(0, "CreateDXGIFactory1 Failed\n", 0, 0);
-	}
 
 	D3D_FEATURE_LEVEL featureLevels[] = 
 	{
-		D3D_FEATURE_LEVEL_12_1,
-		D3D_FEATURE_LEVEL_12_0
+		D3D_FEATURE_LEVEL_11_1,
+		D3D_FEATURE_LEVEL_11_0
 	};
 
 	featureLevels;
 
-#ifdef USE_WARP
-	ComPtr<IDXGIAdapter> warpAdapter;
-	res = factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter));
-	assert(res == S_OK);
-	res = D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&engine.Device));
-	if (FAILED(res))
-	{
-		MessageBox(0, "D3D12CreateDevice Failed\n", 0, 0);
-	}
-#else
-	ComPtr<IDXGIAdapter1> hardwareAdapter;
-	GetHardwareAdapter( factory.Get(), &hardwareAdapter );
-	assert(res == S_OK);
-	res = D3D12CreateDevice( hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&engine.Device));
-	if (FAILED(res))
-	{
-		MessageBox(0, "D3D12CreateDevice Failed\n", 0, 0);
-	}
-#endif
+	D3D_FEATURE_LEVEL featureLevel;
+	HRESULT res = D3D11CreateDevice( 0, D3D_DRIVER_TYPE_HARDWARE, 0, createDeviceFlags, 0, 0, D3D11_SDK_VERSION, &engine.Device, &featureLevel , &engine.Context );
 
-	//create command queue
-	D3D12_COMMAND_QUEUE_DESC queueDesc = {};
-	queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-	queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-
-	res = engine.Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&engine.commandQueue) );
-
-	if (FAILED(res))
+	if( FAILED(res) )
 	{
-		MessageBox(0, "Create Command Queue Failed\n", 0, 0);
+		MessageBox( 0, "D3D11CreateDevice Failed\n", 0, 0 );
 	}
 
-	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS msQualityLevels;
-	msQualityLevels.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	msQualityLevels.SampleCount = 4;
-	msQualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
-	msQualityLevels.NumQualityLevels = 0;
-
-	res = engine.Device->CheckFeatureSupport( D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS, &msQualityLevels, sizeof(msQualityLevels) );
+	res = engine.Device->CheckMultisampleQualityLevels( DXGI_FORMAT_R8G8B8A8_UNORM, 4, &engine.msaaQuality );
 	assert( res == S_OK );
-
-	engine.msaaQuality = msQualityLevels.NumQualityLevels;
 	assert( engine.msaaQuality > 0 );
 
 	DXGI_SWAP_CHAIN_DESC swapChainDesc = {};
-	swapChainDesc.BufferCount = FrameCount;
-	swapChainDesc.BufferDesc.Width = engine.mClientWidth;
-	swapChainDesc.BufferDesc.Height = engine.mClientHeight;
+	swapChainDesc.BufferDesc.Width = 0;
+	swapChainDesc.BufferDesc.Height = 0;
+	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
 	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	swapChainDesc.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	swapChainDesc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+
+	if( bEnable4xMsaa )
+	{
+		swapChainDesc.SampleDesc.Count = 4;
+		swapChainDesc.SampleDesc.Quality = engine.msaaQuality - 1;
+	}
+	else
+	{
+		swapChainDesc.SampleDesc.Count = 1;
+		swapChainDesc.SampleDesc.Quality = 0;
+	}
+
 	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	swapChainDesc.OutputWindow = engine.mMainWnd;
-	swapChainDesc.SampleDesc.Count = 1;
+	swapChainDesc.BufferCount = 1;
 	swapChainDesc.Windowed = true;
+	swapChainDesc.OutputWindow = engine.mMainWnd;
+	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+
+	IDXGIDevice1* dxgiDevice = 0;
+	res = engine.Device->QueryInterface( __uuidof(IDXGIDevice), (void**)&dxgiDevice );
+	assert( res == S_OK );
 	
-	ComPtr<IDXGISwapChain> swapChain;
+	IDXGIAdapter* dxgiAdapter = 0;
+	res = dxgiDevice->GetParent( __uuidof(IDXGIAdapter), (void**)&dxgiAdapter );
+	assert( res == S_OK );
 
-	res = factory->CreateSwapChain(engine.commandQueue.Get(), &swapChainDesc, &swapChain);
-	assert(res == S_OK);
+	IDXGIFactory* dxgiFactory = 0;
+	res = dxgiAdapter->GetParent( __uuidof(IDXGIFactory), (void**)&dxgiFactory );
+	assert( res == S_OK );
 
-	res = swapChain.As(&engine.swapChain);
-	assert(res == S_OK);
-	
-	res = factory->MakeWindowAssociation(engine.mMainWnd, DXGI_MWA_NO_ALT_ENTER);
-	assert(res == S_OK);
+	res = dxgiFactory->CreateSwapChain(engine.Device, &swapChainDesc, &engine.SwapChain );
+	assert( res == S_OK );
 
-	engine.frameIndex = engine.swapChain->GetCurrentBackBufferIndex();
-
-	{
-		D3D12_DESCRIPTOR_HEAP_DESC descriptHeapDesc = {};
-		descriptHeapDesc.NumDescriptors = FrameCount;
-		descriptHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-		descriptHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
-
-		res = engine.Device->CreateDescriptorHeap(&descriptHeapDesc, IID_PPV_ARGS(&engine.rtvDescriptorHeap));
-		assert(res == S_OK);
-
-		engine.descriptorSize = engine.Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	}
-	
-	{
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle(engine.rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
-		for (UINT i = 0; i < FrameCount; i++)
-		{
-			res = engine.swapChain->GetBuffer(i, IID_PPV_ARGS(&engine.renderTargets[i]));
-			assert(res = S_OK);
-			engine.Device->CreateRenderTargetView(engine.renderTargets[i].Get(), nullptr, rtvHandle);
-			rtvHandle.ptr += engine.descriptorSize;
-
-			res = engine.Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&engine.commandAllocator[i]));
-			assert(res == S_OK);
-		}
-	}
+	ReleaseCOM(dxgiDevice);
+	ReleaseCOM(dxgiAdapter);
+	ReleaseCOM(dxgiFactory);
 
 	OnResize();
 }
 
 void GraphicsEngine::Deactivate()
 {
+	ReleaseCOM(engine.RenderTargetView);
+	ReleaseCOM(engine.DepthStencilView);
+	ReleaseCOM(engine.SwapChain);
+	ReleaseCOM(engine.DepthStencil);
+
+	if( engine.Context )
+	{
+		engine.Context->ClearState();
+	}
+
+	ReleaseCOM(engine.Context);
+	ReleaseCOM(engine.Device);
 }
 
 void GraphicsEngine::OnResize()
 {
+	assert( engine.Context );
 	assert( engine.Device );
-	assert( engine.swapChain );
-	assert(engine.commandAllocator);
+	assert( engine.SwapChain );
 
-	Vect v(0.0f, 0.0f, 0.0f, 0.0f);
-	BufferSwap(v);
-	
-	HRESULT res = engine.commandList->Reset( engine.commandAllocator->Get(), nullptr);
+	ReleaseCOM( engine.RenderTargetView );
+	ReleaseCOM( engine.DepthStencilView );
+	ReleaseCOM( engine.DepthStencil );
 
-	for ( int i = 0; i < engine.FrameCount; ++i )
-	{
-		engine.renderTargets[i].Reset();
-	}
-
-	engine.depthStencil.Reset();
-
-	res = engine.swapChain->ResizeBuffers( 2, engine.mClientWidth, engine.mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0 );
+	HRESULT res = engine.SwapChain->ResizeBuffers( 2, engine.mClientWidth, engine.mClientHeight, DXGI_FORMAT_R8G8B8A8_UNORM, 0 );
 	assert( res == S_OK );
 
-	engine.frameIndex = 0;
+	ID3D11Texture2D* backBuffer;
+	res = engine.SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), (void**)&backBuffer );
+	assert( res == S_OK );
+	res = engine.Device->CreateRenderTargetView( backBuffer, 0, &engine.RenderTargetView );
+	assert( res == S_OK );
+	ReleaseCOM( backBuffer );
 
-	{
-		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle(engine.rtvDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
-
-		for (UINT i = 0; i < FrameCount; i++)
-		{
-			res = engine.swapChain->GetBuffer(i, IID_PPV_ARGS(&engine.renderTargets[i]));
-			assert(res = S_OK);
-			engine.Device->CreateRenderTargetView(engine.renderTargets[i].Get(), nullptr, rtvHandle);
-			rtvHandle.ptr += engine.descriptorSize;
-		}
-	}
-
-	D3D12_RESOURCE_DESC depthStencilDesc;
-	depthStencilDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthStencilDesc.Alignment = 0;
+	
+	D3D11_TEXTURE2D_DESC depthStencilDesc;
 	depthStencilDesc.Width = engine.mClientWidth;
 	depthStencilDesc.Height = engine.mClientHeight;
-	depthStencilDesc.DepthOrArraySize = 1;
 	depthStencilDesc.MipLevels = 1;
+	depthStencilDesc.ArraySize = 1;
 	depthStencilDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depthStencilDesc.SampleDesc.Count = engine.mEnable4xMsaa ? 4 : 1;
-	depthStencilDesc.SampleDesc.Quality = engine.mEnable4xMsaa ? (engine.msaaQuality - 1) : 0;
-	depthStencilDesc.Layout = D3D12_TEXTURE_LAYOUT_UNKNOWN;
-	depthStencilDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 
-	D3D12_CLEAR_VALUE optClear;
-	optClear.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	optClear.DepthStencil.Depth = (FLOAT)1.0f;
-	optClear.DepthStencil.Stencil = 0;
+	if( engine.mEnable4xMsaa )
+	{
+		depthStencilDesc.SampleDesc.Count = 4;
+		depthStencilDesc.SampleDesc.Quality = engine.msaaQuality - 1;
+	}
+	else
+	{
+		depthStencilDesc.SampleDesc.Count = 1;
+		depthStencilDesc.SampleDesc.Quality = 0;
+	}
 
-	D3D12_HEAP_PROPERTIES heapProps;
-	heapProps.Type = D3D12_HEAP_TYPE_DEFAULT;
+	depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
+	depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	depthStencilDesc.CPUAccessFlags = 0;
+	depthStencilDesc.MiscFlags = 0;
 
-	res = engine.Device->CreateCommittedResource(&heapProps, D3D12_HEAP_FLAG_NONE, &depthStencilDesc, D3D12_RESOURCE_STATE_COMMON, &optClear, IID_PPV_ARGS(engine.depthStencil.GetAddressOf()) );
-	assert(res == S_OK);
-
-	engine.Device->CreateDepthStencilView( engine.depthStencil.Get(), nullptr, engine.dsvDescriptorHeap->GetCPUDescriptorHandleForHeapStart() );
+	res = engine.Device->CreateTexture2D( &depthStencilDesc, 0, &engine.DepthStencil );
+	assert( res == S_OK );
+	res = engine.Device->CreateDepthStencilView( engine.DepthStencil, 0, &engine.DepthStencilView );
 	assert( res == S_OK );
 
-	D3D12_RESOURCE_BARRIER transition;
-	transition.Transition.pResource = engine.depthStencil.Get();
-	transition.Transition.StateBefore = D3D12_RESOURCE_STATE_COMMON;
-	transition.Transition.StateAfter = D3D12_RESOURCE_STATE_DEPTH_WRITE;
-	engine.commandList->ResourceBarrier(1, &transition);
-
-	res = engine.commandList->Close();
-	assert(res == S_OK);
-
-	ID3D12CommandList* cmdLists[] = { engine.commandList.Get() };
-	engine.commandQueue->ExecuteCommandLists(_countof(cmdLists), cmdLists);
-
-	BufferSwap(v);
+	engine.Context->OMSetRenderTargets( 1, &engine.RenderTargetView, engine.DepthStencilView );
 
 	engine.Viewport.TopLeftX = 0.0f;
 	engine.Viewport.TopLeftY = 0.0f;
@@ -270,7 +181,7 @@ void GraphicsEngine::OnResize()
 	engine.Viewport.MinDepth = 0.0f;
 	engine.Viewport.MaxDepth = 1.0f;
 
-	engine.scissorRect = { 0, 0, engine.mClientWidth, engine.mClientHeight };
+	engine.Context->RSSetViewports( 1, &engine.Viewport );
 }
 
 void GraphicsEngine::setViewPort( const int posX, const int posY, const int width, const int height )
@@ -281,46 +192,25 @@ void GraphicsEngine::setViewPort( const int posX, const int posY, const int widt
 	OnResize();
 }
 
-void GraphicsEngine::BufferSwap( Vect& bgColor )
+void GraphicsEngine::ClearBuffers( Vect& bgColor )
 {
-	const UINT64 currentFenceValue = engine.fenceValues[engine.frameIndex];
+	assert( engine.Context );
+	assert( engine.SwapChain );
 
-	HRESULT res = engine.commandQueue->Signal(engine.fence.Get(), currentFenceValue);
-	assert(res == S_OK);
-
-	engine.frameIndex = engine.swapChain->GetCurrentBackBufferIndex();
-
-	if (engine.fence->GetCompletedValue < engine.fenceValues[engine.frameIndex])
-	{
-		res = engine.fence->SetEventOnCompletion(engine.fenceValues[engine.frameIndex], engine.fenceEvent);
-		assert(res == S_OK);
-		WaitForSingleObjectEx(engine.fenceValues, INFINITE, FALSE);
-	}
-		
-	engine.fenceValues[engine.frameIndex] = currentFenceValue + 1;
+	engine.Context->ClearRenderTargetView(engine.RenderTargetView, &bgColor[x] );
+	engine.Context->ClearDepthStencilView(engine.DepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 }
 
-ComPtr<ID3D12Device> GraphicsEngine::getDevice()
+ID3D11Device* GraphicsEngine::getDevice()
 {
 	return engine.Device;
 }
-
-ComPtr<IDXGISwapChain3> GraphicsEngine::getSwapChain()
+ID3D11DeviceContext* GraphicsEngine::getContext()
 {
-	return engine.swapChain;
+	return engine.Context;
 }
 
-ComPtr<ID3D12RootSignature> GraphicsEngine::getRootSignature()
+IDXGISwapChain* GraphicsEngine::getSwapChain()
 {
-	return engine.rootSignature;
-}
-
-ComPtr<ID3D12GraphicsCommandList> GraphicsEngine::getCommandList()
-{
-	return engine.commandList;
-}
-
-ComPtr<ID3D12CommandQueue> GraphicsEngine::getCommandQueue()
-{
-	return engine.commandQueue;
+	return engine.SwapChain;
 }

@@ -15,7 +15,7 @@ GraphicsObject_Solid::~GraphicsObject_Solid()
 void GraphicsObject_Solid::draw( Matrix& proj_Mat )
 {
 	Shader* shade = material->activate();
-	ComPtr<ID3D12CommandList> commandList = GraphicsEngine::getCommandList();
+	ID3D11DeviceContext* Context = GraphicsEngine::getContext();
 	Context->VSSetShader( shade->getVertexShader(), nullptr, 0 );
 	Context->PSSetShader( shade->getPixelShader(), nullptr, 0 );
 

@@ -49,7 +49,7 @@
       <SDLCheck>false</SDLCheck>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;$(SolutionDir)GameEngine\Input;$(SolutionDir)D3DX12;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)libs\Time\lib;$(SolutionDir)libs\Time\include;$(SolutionDir)File;$(SolutionDir)MathEngine;$(SolutionDir)GameEngine\Engine;$(SolutionDir)GameEngine\Shader;$(SolutionDir)GameEngine\Model;$(SolutionDir)GameEngine\Material;$(SolutionDir)GameEngine;$(SolutionDir)GameEngine\GraphicsObjects;$(SolutionDir)GameEngine\GameObjects;$(SolutionDir)GameEngine\Camera;$(SolutionDir)GameEngine\Input;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DisableLanguageExtensions>false</DisableLanguageExtensions>
       <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -106,7 +106,6 @@
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\D3DX12\d3dx12.h" />
     <ClInclude Include="..\File\FileSystem.h" />
     <ClInclude Include="..\MathEngine\Constants.h" />
     <ClInclude Include="..\MathEngine\Enum.h" />
@@ -161,22 +160,18 @@
     <FxCompile Include="Shader\Shaders\Base.ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\Shaders\Base.vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\Shaders\Solid.ps.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
     </FxCompile>
     <FxCompile Include="Shader\Shaders\Solid.vs.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">5.1</ShaderModel>
     </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

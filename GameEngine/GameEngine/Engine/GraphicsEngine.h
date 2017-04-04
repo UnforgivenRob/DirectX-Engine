@@ -1,11 +1,7 @@
 #ifndef GRAPHICSENGINE_H
 #define GRAPHICSENGINE_H
-#include <d3d12.h>
-#include <dxgi1_5.h>
-#include <wrl/client.h>
+#include <d3d11.h>
 #include "MathEngine.h"
-
-using Microsoft::WRL::ComPtr;
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
 
@@ -16,48 +12,26 @@ public:
 	static void OnResize();
 	static void setViewPort( const int posX, const int posY, const int width, const int height );
 	static void Deactivate();
-	static void BufferSwap( Vect& bgColor );
-	static ComPtr<ID3D12Device> getDevice();
-	static ComPtr<IDXGISwapChain3> getSwapChain();
-	static ComPtr<ID3D12RootSignature> getRootSignature();
-	static ComPtr<ID3D12GraphicsCommandList> getCommandList();
-	static ComPtr<ID3D12CommandQueue> getCommandQueue();
+	static void ClearBuffers( Vect& bgColor );
+	static ID3D11Device* getDevice();
+	static ID3D11DeviceContext* getContext();
+	static IDXGISwapChain* getSwapChain();
 
 private:
 	GraphicsEngine();
 	~GraphicsEngine();
 
 	static GraphicsEngine engine;
-
-	static const UINT FrameCount = 2;
 	
 	HWND	  mMainWnd;
 	UINT	  msaaQuality;
-
-	D3D12_VIEWPORT Viewport;
-	D3D12_RECT scissorRect;
-
-	ComPtr<IDXGISwapChain3> swapChain;
-	ComPtr<ID3D12Device> Device;
-	ComPtr<ID3D12Resource> renderTargets[FrameCount];
-	ComPtr<ID3D12Resource> depthStencil;
-	ComPtr<ID3D12CommandAllocator> commandAllocator[FrameCount];
-	ComPtr<ID3D12CommandQueue> commandQueue;
-	ComPtr<ID3D12RootSignature> rootSignature;
-	ComPtr<ID3D12DescriptorHeap> rtvDescriptorHeap;
-	ComPtr<ID3D12DescriptorHeap> dsvDescriptorHeap;
-	ComPtr<ID3D12PipelineState> pipelineState;
-	ComPtr<ID3D12GraphicsCommandList> commandList;
-	UINT descriptorSize;
-
-	ComPtr<ID3D12Resource> vertexBuffer;
-	D3D12_VERTEX_BUFFER_VIEW vertexBufferView;
-
-	UINT frameIndex;
-	HANDLE fenceEvent;
-	ComPtr<ID3D12Fence> fence;
-	UINT64 fenceValues[FrameCount];
-
+	ID3D11Device* Device;
+	ID3D11DeviceContext* Context;
+	IDXGISwapChain* SwapChain;
+	ID3D11Texture2D* DepthStencil;
+	ID3D11RenderTargetView* RenderTargetView;
+	ID3D11DepthStencilView* DepthStencilView;
+	D3D11_VIEWPORT Viewport;
 	int mClientWidth;
 	int mClientHeight;
 	bool mEnable4xMsaa;

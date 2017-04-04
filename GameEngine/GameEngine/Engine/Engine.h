@@ -1,10 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include <d3d12.h>
-#include <wrl\client.h>
-
-using Microsoft::WRL::ComPtr;
+#include <d3d11.h>
 
 #define ReleaseCOM(x) { if(x){ x->Release(); x = 0; } }
 
@@ -25,8 +22,8 @@ public:
 
 	virtual LRESULT MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-	ComPtr<ID3D12Device> const getDevice();
-
+	ID3D11Device* const getDevice();
+	ID3D11DeviceContext* const getContext();
 private:
 	void PreLoad();
 	void PreInit();
